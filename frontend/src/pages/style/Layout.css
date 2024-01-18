@@ -1,0 +1,80 @@
+/* Layout.css */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;    
+  }
+  
+  nav {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+  }
+  
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  nav li {
+    margin: 0 10px;
+  }
+  
+  nav a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  nav a:hover {
+    color: #f4f4f4;
+  }
+  
+  /* Animace pro odkazy */
+  @keyframes linkFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  nav a {
+    animation: linkFadeIn 0.5s ease-out;
+  }
+  
+  /* Styling pro <Outlet /> */
+  .outlet-container {
+    padding: 20px;
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+
+  .chaticon {
+    color: white;
+  }
+
+  .chaticon-container {
+    background-color: #333;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5em;
+    height: 5em;
+    position: fixed;
+    bottom: 3em;
+    right: 3em;
+    z-index: 2 !important;
+  }

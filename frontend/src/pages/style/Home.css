@@ -1,0 +1,7 @@
+.map {
+    z-index: 1;
+}
+
+body {
+    overflow: hidden;
+}
