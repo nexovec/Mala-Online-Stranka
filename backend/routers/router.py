@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
-router = APIRouter(prefix="/router")
+router = APIRouter(prefix="/router", tags=["router"])
+
 
 @router.get("/")
 def read_root():

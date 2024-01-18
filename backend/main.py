@@ -4,8 +4,9 @@ from backend.routers import router
 app = FastAPI(
     title="HackujStat V5",
     docs_url="/docs",
-    redoc_url=None,   
+    redoc_url=None,
 )
+
 
 @app.get("/")
 def read_root():
