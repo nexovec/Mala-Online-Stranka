@@ -27,3 +27,4 @@ uvicorn
 polars[all]
 scipy
 matplotlib
+statsmodels
