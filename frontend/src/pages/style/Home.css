@@ -6,28 +6,23 @@ body {
   overflow: hidden;
 }
 
-.selector {
-  position: absolute;
-  top: 1em;
-  left: 5em;
-  z-index: 2;
-  width: 20%;
-  background-color: #fff;
-  padding: 1em;
+.selectors {
+    position: absolute;
+    top: 5em;
+    left: 0.6em;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: fle;
+    width: 20em;
+    height: auto;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 1em;
 }
 
-.selector2 {
-    position: absolute;
-    top: 1em;
-    left: 35em;
-    z-index: 2;
-    width: 20%;
-    background-color: #fff;
-    padding: 1em;
-  }
-
-.selector div {
-  margin: 0;
+.selectors div {
+  margin: 0 !important;
 }
 
 .timeline {
@@ -40,8 +35,9 @@ body {
   background-color: #fff;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  border-radius: 20px 20px 0 0;
 }
 
 .timeline > span {
@@ -53,6 +49,15 @@ body {
 }
 
 .slider {
-  width: 80% !important;
+  width: 100%;
   margin: 1em;
+}
+
+.slider-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 50%;
+    margin-left: 2em;
 }

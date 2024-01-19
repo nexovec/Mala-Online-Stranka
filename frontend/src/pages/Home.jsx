@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import { GeoJSON } from "react-leaflet";
 import { useEffect, useState } from "react";
 import { NativeSelect } from "@mantine/core";
@@ -9,7 +9,8 @@ const Home = () => {
   const [geojsonData, setGeojsonData] = useState(null);
   const [data, setData] = useState([]);
   const [year, setYear] = useState(2020);
-  const [level, setLevel] = useState();
+  const [level, setLevel] = useState("okresy");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,14 +30,16 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    setGeojsonData(null)
+    setLoading(true);
+    setGeojsonData(null);
     fetch(`${level}.json`)
       .then((response) => response.json())
       .then((data) => {
         setGeojsonData(data);
+        setLoading(false);
+        console.log(data);
       });
   }, [level]);
-  
 
   const geoJSONStyle = (feature) => {
     return {
@@ -47,29 +50,46 @@ const Home = () => {
     };
   };
 
+  if (loading) {
+    return (
+      <div>
+        <h1>Načítání dat...</h1>
+      </div>
+    );
+  }
+
+  const onEachFeature = (feature, layer) => {
+    layer.on({
+      click: () => {
+        console.log(`ID místa: ${feature.id}`);
+      }
+    });
+  };
+
   return (
     <>
       <MapContainer
-        center={[50.08, 14.42]}
+        center={[49.8442, 13.3633]}
         zoom={8}
         scrollWheelZoom={true}
         style={{ height: "100vh", width: "100%" }}
         className="map"
       >
-        {geojsonData && <GeoJSON data={geojsonData} style={geoJSONStyle} />}
+        {geojsonData && (
+          <GeoJSON
+            data={geojsonData}
+            style={geoJSONStyle}
+            onEachFeature={onEachFeature} 
+          />
+        )}
 
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={[50.08, 14.42]}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
       </MapContainer>
 
-      <div className="selector">
+      <div className="selectors">
         <NativeSelect
           mt="md"
           label="Výběr ukazatele"
@@ -78,36 +98,35 @@ const Home = () => {
             label: item.nazev,
           }))}
         />
-      </div>
 
-
-      <div className="selector2">
         <NativeSelect
           mt="md"
           label="Výběr ukazatele"
-          data={['okresy', 'kraje', 'obce']}
-          onChange={
-            (e) => {
-              setLevel(e.target.value);
-              console.log(e.target.value);
-
-            }
-          }
+          value={level}
+          data={["okresy", "kraje", "obce"]}
+          onChange={(e) => {
+            setLevel(e.target.value);
+            console.log(e.target.value);
+          }}
         />
       </div>
 
-
       <div className="timeline">
-        <Slider
-          className="slider"
-          value={year}
-          min={2000}
-          max={2020}
-          onChange={(e) => setYear(e.target.value)}
-          step={1}
-          marks 
-        />
-        <h3>{year}</h3>
+        <div className="slider-container">
+          <h3>2000</h3>
+          <Slider
+            className="slider"
+            value={year}
+            min={2000}
+            max={2020}
+            valueLabelDisplay="off"
+            onChange={(e) => setYear(e.target.value)}
+            step={1}
+            marks
+          />
+          <h3>2022</h3>
+          <h3>{year}</h3>
+        </div>
       </div>
     </>
   );
