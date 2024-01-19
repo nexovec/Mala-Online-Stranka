@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import router
+from backend.routers import data
 
 app = FastAPI(
     title="HackujStat V5",
@@ -13,4 +13,4 @@ def read_root():
     return {"Hello": "World"}
 
 
-app.include_router(router.router)
+app.include_router(data.router)
