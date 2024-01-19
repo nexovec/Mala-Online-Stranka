@@ -5,3 +5,17 @@
 body {
     overflow: hidden;
 }
+
+.selector {
+    position: absolute;
+    top: 1em;
+    left: 5em;
+    z-index: 2;
+    width: 20%;
+    background-color: #fff;
+    padding: 1em
+}
+
+.selector div {    
+    margin: 0;
+}

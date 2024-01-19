@@ -1,6 +1,7 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { GeoJSON } from "react-leaflet";
 import { useEffect, useState } from "react";
+import { NativeSelect } from "@mantine/core";
 import "./style/Home.css";
 
 const Home = () => {
@@ -35,6 +36,7 @@ const Home = () => {
         className="map"
       >
         {geojsonData && <GeoJSON data={geojsonData} style={geoJSONStyle} />}
+
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -44,7 +46,16 @@ const Home = () => {
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup>
         </Marker>
-      </MapContainer>
+      </MapContainer> 
+
+      <div className="selector">
+          <NativeSelect
+            mt="md"
+            label="Výběr ukazatele"
+            data={["React", "Angular", "Vue", "Svelte"]}
+            //description="Description below the input"
+          />
+        </div>
     </>
   );
 };
