@@ -1,0 +1,201 @@
+obec_id,obec_name,okres_id,okres_name,orp_id,orp_name,kraj_id,kraj_name
+500011,Želechovice nad Dřevnicí,40851,Zlín,7213,Zlín,3131,Zlínský kraj
+500020,Petrov nad Desnou,40819,Šumperk,7111,Šumperk,3123,Olomoucký kraj
+500046,Libhošť,40894,Nový Jičín,8115,Nový Jičín,3140,Moravskoslezský kraj
+500054,Praha 1,40924,Praha,1000,Praha,3018,Hlavní město Praha
+500062,Krhová,40843,Vsetín,7210,Valašské Meziříčí,3131,Zlínský kraj
+500071,Poličná,40843,Vsetín,7210,Valašské Meziříčí,3131,Zlínský kraj
+500089,Praha 2,40924,Praha,1000,Praha,3018,Hlavní město Praha
+500097,Praha 3,40924,Praha,1000,Praha,3018,Hlavní město Praha
+500101,Bražec,40436,Karlovy Vary,4103,Karlovy Vary,3051,Karlovarský kraj
+500119,Praha 4,40924,Praha,1000,Praha,3018,Hlavní město Praha
+500127,Doupovské Hradiště,40436,Karlovy Vary,4106,Ostrov,3051,Karlovarský kraj
+500135,Kozlov,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+500143,Praha 5,40924,Praha,1000,Praha,3018,Hlavní město Praha
+500151,Luboměř pod Strážnou,40801,Přerov,7101,Hranice,3123,Olomoucký kraj
+500160,Město Libavá,40789,Olomouc,7110,Šternberk,3123,Olomoucký kraj
+500178,Praha 6,40924,Praha,1000,Praha,3018,Hlavní město Praha
+500186,Praha 7,40924,Praha,1000,Praha,3018,Hlavní město Praha
+500194,Polná na Šumavě,40291,Český Krumlov,3103,Český Krumlov,3034,Jihočeský kraj
+500208,Praha 8,40924,Praha,1000,Praha,3018,Hlavní město Praha
+500216,Praha 9,40924,Praha,1000,Praha,3018,Hlavní město Praha
+500224,Praha 10,40924,Praha,1000,Praha,3018,Hlavní město Praha
+500259,Veřovice,40894,Nový Jičín,8105,Frenštát pod Radhoštěm,3140,Moravskoslezský kraj
+500291,Vřesina,40916,Ostrava-město,8119,Ostrava,3140,Moravskoslezský kraj
+500496,Olomouc,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+500526,Bělkovice-Lašťany,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+500623,Bílá Lhota,40789,Olomouc,7105,Litovel,3123,Olomoucký kraj
+500801,Blatec,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+500852,Bohuňovice,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+500861,Bouzov,40789,Olomouc,7105,Litovel,3123,Olomoucký kraj
+500879,Bystročice,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+501298,Ústí nad Labem-Severní Terasa,40517,Ústí nad Labem,4214,Ústí nad Labem,3069,Ústecký kraj
+501476,Dlouhá Loučka,40789,Olomouc,7112,Uničov,3123,Olomoucký kraj
+501646,Dolany,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+501751,Drahanovice,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+501794,Dub nad Moravou,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+501841,Grygov,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+502081,Ústí nad Labem-Neštěmice,40517,Ústí nad Labem,4214,Ústí nad Labem,3069,Ústecký kraj
+502146,Hlubočky,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+502235,Hněvotín,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+502316,Ústí nad Labem-Střekov,40517,Ústí nad Labem,4214,Ústí nad Labem,3069,Ústecký kraj
+502405,Hnojice,40789,Olomouc,7110,Šternberk,3123,Olomoucký kraj
+502545,Horka nad Moravou,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+502839,Cholina,40789,Olomouc,7105,Litovel,3123,Olomoucký kraj
+503142,Jívová,40789,Olomouc,7110,Šternberk,3123,Olomoucký kraj
+503304,Kožušany-Tážaly,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+503410,Žitovlice,40231,Nymburk,2118,Nymburk,3026,Středočeský kraj
+503444,Litovel,40789,Olomouc,7105,Litovel,3123,Olomoucký kraj
+503622,Luká,40789,Olomouc,7105,Litovel,3123,Olomoucký kraj
+503657,Lutín,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+503738,Majetín,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+503916,Kostelec,40410,Tachov,3213,Stříbro,3042,Plzeňský kraj
+503941,Libavá,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+504246,Mladeč,40789,Olomouc,7105,Litovel,3123,Olomoucký kraj
+504301,Dřenice,40614,Chrudim,5304,Chrudim,3093,Pardubický kraj
+504441,Náklo,40789,Olomouc,7105,Litovel,3123,Olomoucký kraj
+504505,Náměšť na Hané,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+504785,Paseka,40789,Olomouc,7112,Uničov,3123,Olomoucký kraj
+504807,Lány,40614,Chrudim,5304,Chrudim,3093,Pardubický kraj
+504921,Třibřichy,40614,Chrudim,5304,Chrudim,3093,Pardubický kraj
+504955,Dvakačovice,40614,Chrudim,5304,Chrudim,3093,Pardubický kraj
+505005,Bítovany,40614,Chrudim,5304,Chrudim,3093,Pardubický kraj
+505013,Příkazy,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+505030,Dolní Bezděkov,40614,Chrudim,5304,Chrudim,3093,Pardubický kraj
+505081,Senice na Hané,40789,Olomouc,7105,Litovel,3123,Olomoucký kraj
+505099,Červená Hora,40584,Náchod,5209,Náchod,3085,Královéhradecký kraj
+505111,Slatinice,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+505145,Březová nad Svitavou,40631,Svitavy,5312,Svitavy,3093,Pardubický kraj
+505161,Štěpánov,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+505188,Šternberk,40789,Olomouc,7110,Šternberk,3123,Olomoucký kraj
+505218,Šumvald,40789,Olomouc,7112,Uničov,3123,Olomoucký kraj
+505269,Těšetice,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+505293,Troubelice,40789,Olomouc,7112,Uničov,3123,Olomoucký kraj
+505366,Tršice,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+505391,Bělá u Jevíčka,40631,Svitavy,5308,Moravská Třebová,3093,Pardubický kraj
+505501,Újezd,40789,Olomouc,7112,Uničov,3123,Olomoucký kraj
+505528,Jenčice,40479,Litoměřice,4208,Lovosice,3069,Ústecký kraj
+505587,Uničov,40789,Olomouc,7112,Uničov,3123,Olomoucký kraj
+505609,Velká Bystřice,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+505650,Velký Týnec,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+505668,Velký Újezd,40789,Olomouc,7107,Olomouc,3123,Olomoucký kraj
+505781,Zápy,40240,Praha-východ,2103,Brandýs nad Labem-Stará Boleslav,3026,Středočeský kraj
+505862,Žerotín,40789,Olomouc,7110,Šternberk,3123,Olomoucký kraj
+506192,Bohuslavice,40908,Opava,8109,Hlučín,3140,Moravskoslezský kraj
+506214,Bolatice,40908,Opava,8113,Kravaře,3140,Moravskoslezský kraj
+506320,Brumovice,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+506451,Březová,40908,Opava,8122,Vítkov,3140,Moravskoslezský kraj
+506460,Budišov nad Budišovkou,40908,Opava,8122,Vítkov,3140,Moravskoslezský kraj
+506486,Boží Dar,40436,Karlovy Vary,4106,Ostrov,3051,Karlovarský kraj
+506494,Nové Hamry,40436,Karlovy Vary,4103,Karlovy Vary,3051,Karlovarský kraj
+506621,Čichalov,40436,Karlovy Vary,4103,Karlovy Vary,3051,Karlovarský kraj
+506664,Skořice,40401,Rokycany,3211,Rokycany,3042,Plzeňský kraj
+506699,Otmarov,40720,Brno-venkov,6221,Židlochovice,3115,Jihomoravský kraj
+506702,Dolní Benešov,40908,Opava,8109,Hlučín,3140,Moravskoslezský kraj
+506711,Dolní Lhota,40916,Ostrava-město,8119,Ostrava,3140,Moravskoslezský kraj
+506729,Dvorce,40665,Jihlava,6105,Jihlava,3107,Kraj Vysočina
+506737,Chvalčov,40827,Kroměříž,7201,Bystřice pod Hostýnem,3131,Zlínský kraj
+506753,Háj ve Slezsku,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+506761,Alojzov,40797,Prostějov,7108,Prostějov,3123,Olomoucký kraj
+506770,Seloutky,40797,Prostějov,7108,Prostějov,3123,Olomoucký kraj
+507016,Hlučín,40908,Opava,8109,Hlučín,3140,Moravskoslezský kraj
+507091,Nýdek,40878,Frýdek-Místek,8121,Třinec,3140,Moravskoslezský kraj
+507105,Hněvošice,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+507113,Holasovice,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+507181,Pržno,40878,Frýdek-Místek,8107,Frýdlant nad Ostravicí,3140,Moravskoslezský kraj
+507237,Komorní Lhotka,40878,Frýdek-Místek,8121,Třinec,3140,Moravskoslezský kraj
+507261,Hrabyně,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+507270,Hradec nad Moravicí,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+507334,Chuchelná,40908,Opava,8113,Kravaře,3140,Moravskoslezský kraj
+507377,Jakartovice,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+507423,Janovice,40878,Frýdek-Místek,8107,Frýdlant nad Ostravicí,3140,Moravskoslezský kraj
+507458,Košařiska,40878,Frýdek-Místek,8121,Třinec,3140,Moravskoslezský kraj
+507504,Kobeřice,40908,Opava,8113,Kravaře,3140,Moravskoslezský kraj
+507547,Milíkov,40878,Frýdek-Místek,8110,Jablunkov,3140,Moravskoslezský kraj
+507580,Kravaře,40908,Opava,8113,Kravaře,3140,Moravskoslezský kraj
+507610,Doňov,40304,Jindřichův Hradec,3105,Jindřichův Hradec,3034,Jihočeský kraj
+507628,Pleše,40304,Jindřichův Hradec,3105,Jindřichův Hradec,3034,Jihočeský kraj
+507644,Újezdec,40304,Jindřichův Hradec,3105,Jindřichův Hradec,3034,Jihočeský kraj
+507652,Višňová,40304,Jindřichův Hradec,3105,Jindřichův Hradec,3034,Jihočeský kraj
+507695,Záhoří,40304,Jindřichův Hradec,3105,Jindřichův Hradec,3034,Jihočeský kraj
+507717,Peč,40304,Jindřichův Hradec,3104,Dačice,3034,Jihočeský kraj
+507733,Březina,40304,Jindřichův Hradec,3105,Jindřichův Hradec,3034,Jihočeský kraj
+507784,Ratiboř,40304,Jindřichův Hradec,3105,Jindřichův Hradec,3034,Jihočeský kraj
+507920,Litultovice,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+507971,Ludgeřovice,40908,Opava,8109,Hlučín,3140,Moravskoslezský kraj
+508004,Roseč,40304,Jindřichův Hradec,3105,Jindřichův Hradec,3034,Jihočeský kraj
+508128,Markvartovice,40908,Opava,8109,Hlučín,3140,Moravskoslezský kraj
+508144,Melč,40908,Opava,8122,Vítkov,3140,Moravskoslezský kraj
+508152,Střížovice,40304,Jindřichův Hradec,3105,Jindřichův Hradec,3034,Jihočeský kraj
+508357,Kostelní Vydří,40304,Jindřichův Hradec,3104,Dačice,3034,Jihočeský kraj
+508373,Mokré Lazce,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+508501,Lužnice,40304,Jindřichův Hradec,3114,Třeboň,3034,Jihočeský kraj
+508683,Záblatí,40304,Jindřichův Hradec,3114,Třeboň,3034,Jihočeský kraj
+509078,Plavsko,40304,Jindřichův Hradec,3105,Jindřichův Hradec,3034,Jihočeský kraj
+509108,Kostelní Radouň,40304,Jindřichův Hradec,3105,Jindřichův Hradec,3034,Jihočeský kraj
+509116,Červený Hrádek,40304,Jindřichův Hradec,3104,Dačice,3034,Jihočeský kraj
+509141,Dvory nad Lužnicí,40304,Jindřichův Hradec,3114,Třeboň,3034,Jihočeský kraj
+509191,Cep,40304,Jindřichův Hradec,3114,Třeboň,3034,Jihočeský kraj
+509388,Arneštovice,40673,Pelhřimov,6110,Pelhřimov,3107,Kraj Vysočina
+509418,Bořetín,40673,Pelhřimov,6110,Pelhřimov,3107,Kraj Vysočina
+509574,Oldřišov,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+509612,Otice,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+509621,Předotice,40312,Písek,3108,Písek,3034,Jihočeský kraj
+509647,Píšť,40908,Opava,8109,Hlučín,3140,Moravskoslezský kraj
+509736,Pustá Polom,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+509752,Křižanov,40312,Písek,3107,Milevsko,3034,Jihočeský kraj
+509841,Raduň,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+510068,Čečelovice,40339,Strakonice,3101,Blatná,3034,Jihočeský kraj
+510131,Skřipov,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+510289,Slavkov,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+510297,Služovice,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+510343,Stěbořice,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+510378,Sudice,40908,Opava,8113,Kravaře,3140,Moravskoslezský kraj
+510432,Šilheřovice,40908,Opava,8109,Hlučín,3140,Moravskoslezský kraj
+510483,Štěpánkovice,40908,Opava,8113,Kravaře,3140,Moravskoslezský kraj
+510491,Štítina,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+510556,Láz,40681,Třebíč,6106,Moravské Budějovice,3107,Kraj Vysočina
+510645,Kojatín,40681,Třebíč,6113,Třebíč,3107,Kraj Vysočina
+510882,Velká Polom,40916,Ostrava-město,8119,Ostrava,3140,Moravskoslezský kraj
+510891,Velké Heraltice,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+510939,Velké Hoštice,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+510980,Ocmanice,40681,Třebíč,6107,Náměšť nad Oslavou,3107,Kraj Vysočina
+511021,Vítkov,40908,Opava,8122,Vítkov,3140,Moravskoslezský kraj
+511081,Sedlec,40681,Třebíč,6107,Náměšť nad Oslavou,3107,Kraj Vysočina
+511161,Vršovice,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+511242,Vícenice u Náměště nad Oslavou,40681,Třebíč,6107,Náměšť nad Oslavou,3107,Kraj Vysočina
+511307,Rácovice,40681,Třebíč,6106,Moravské Budějovice,3107,Kraj Vysočina
+511382,Přerov,40801,Přerov,7109,Přerov,3123,Olomoucký kraj
+511412,Oslavička,40690,Žďár nad Sázavou,6114,Velké Meziříčí,3107,Kraj Vysočina
+511587,Josefov,40444,Sokolov,4107,Sokolov,3051,Karlovarský kraj
+511633,Bocanovice,40878,Frýdek-Místek,8110,Jablunkov,3140,Moravskoslezský kraj
+511935,Bukovec,40878,Frýdek-Místek,8110,Jablunkov,3140,Moravskoslezský kraj
+511951,Dolní Lomná,40878,Frýdek-Místek,8110,Jablunkov,3140,Moravskoslezský kraj
+511986,Horní Lomná,40878,Frýdek-Místek,8110,Jablunkov,3140,Moravskoslezský kraj
+512028,Písek,40878,Frýdek-Místek,8110,Jablunkov,3140,Moravskoslezský kraj
+512176,Hrádek,40878,Frýdek-Místek,8110,Jablunkov,3140,Moravskoslezský kraj
+512184,Metylovice,40878,Frýdek-Místek,8107,Frýdlant nad Ostravicí,3140,Moravskoslezský kraj
+512192,Horní Domaslavice,40878,Frýdek-Místek,8106,Frýdek-Místek,3140,Moravskoslezský kraj
+512231,Bělotín,40801,Přerov,7101,Hranice,3123,Olomoucký kraj
+512281,Beňov,40801,Přerov,7109,Přerov,3123,Olomoucký kraj
+512401,Bezuchov,40801,Přerov,7109,Přerov,3123,Olomoucký kraj
+512532,Bochoř,40801,Přerov,7109,Přerov,3123,Olomoucký kraj
+512745,Těškovice,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+512800,Brodek u Přerova,40801,Přerov,7109,Přerov,3123,Olomoucký kraj
+512826,Buk,40801,Přerov,7109,Přerov,3123,Olomoucký kraj
+512869,Strahovice,40908,Opava,8113,Kravaře,3140,Moravskoslezský kraj
+512877,Býškovice,40801,Přerov,7101,Hranice,3123,Olomoucký kraj
+512893,Nové Lublice,40908,Opava,8122,Vítkov,3140,Moravskoslezský kraj
+512907,Kyjovice,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+512923,Chlebičov,40908,Opava,8117,Opava,3140,Moravskoslezský kraj
+512974,Bělá,40908,Opava,8109,Hlučín,3140,Moravskoslezský kraj
+512982,Citov,40801,Přerov,7109,Přerov,3123,Olomoucký kraj
+512991,Drnek,40185,Kladno,2124,Slaný,3026,Středočeský kraj
+513032,Kamenný Most,40185,Kladno,2124,Slaný,3026,Středočeský kraj
+513041,Lhota,40185,Kladno,2109,Kladno,3026,Středočeský kraj
+513059,Čelechovice,40801,Přerov,7109,Přerov,3123,Olomoucký kraj
+513067,Černotín,40801,Přerov,7101,Hranice,3123,Olomoucký kraj
+513075,Hobšovice,40185,Kladno,2124,Slaný,3026,Středočeský kraj
+513105,Dobrčice,40801,Přerov,7109,Přerov,3123,Olomoucký kraj
+513113,Malé Přítočno,40185,Kladno,2109,Kladno,3026,Středočeský kraj
+513130,Dolany,40185,Kladno,2109,Kladno,3026,Středočeský kraj

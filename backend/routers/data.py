@@ -7,9 +7,17 @@ router = APIRouter(prefix="/data", tags=["router"])
 @router.get("/")
 def read_root(
     metric: int,
+    level: str,
     year: int,
 ):
-    return {"Hello": "Router"}
+    data = pd.read_csv(f"data/data_{year}.csv")
+
+    data = data.loc[data["kodukaz"] == metric]
+    data = data[["koduzemi", "hodnota "]]
+
+    data = data.to_json(orient="records")
+
+    data
 
 
 @router.get("/metrics")
