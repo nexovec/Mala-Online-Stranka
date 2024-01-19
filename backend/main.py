@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .routers import data
+from .routers import data, ciselnik
 
 app = FastAPI(
     title="HackujStat V5",
@@ -14,3 +14,4 @@ def read_root():
 
 
 app.include_router(data.router)
+app.include_router(ciselnik.router)
