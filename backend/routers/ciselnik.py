@@ -36,7 +36,3 @@ def get_places(level: str):
     data = places.to_json("records")
 
     return data
-
-@router.get("/ranges/{metricId}")
-def get_rozsahy(metricId: int):
-    return {}
