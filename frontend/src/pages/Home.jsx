@@ -1,21 +1,45 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import  "./style/Home.css";
+import { GeoJSON } from "react-leaflet";
+import { useEffect, useState } from "react";
+import "./style/Home.css";
 
 const Home = () => {
+  const [geojsonData, setGeojsonData] = useState(null);
+
+  useEffect(() => {
+    fetch("obce.json")
+      .then((response) => response.json())
+      .then((data) => {
+        setGeojsonData(data);
+      });
+  }, []);
+
+  const geoJSONStyle = (feature) => {
+    return {
+      fillColor: "black",
+      fillOpacity: 0.1,
+      color: "black",
+      weight: 1.5,
+    };
+  };
+
+  console.log(geojsonData);
+
   return (
     <>
       <MapContainer
-        center={[51.505, -0.09]}
-        zoom={13}
+        center={[50.08, 14.42]}
+        zoom={8}
         scrollWheelZoom={true}
         style={{ height: "100vh", width: "100%" }}
         className="map"
       >
+        {geojsonData && <GeoJSON data={geojsonData} style={geoJSONStyle} />}
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={[51.505, -0.09]}>
+        <Marker position={[50.08, 14.42]}>
           <Popup>
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup>
