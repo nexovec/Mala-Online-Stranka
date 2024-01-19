@@ -25,3 +25,5 @@ tinydb
 plotly
 uvicorn
 polars[all]
+scipy
+matplotlib
