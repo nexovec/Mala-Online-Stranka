@@ -1,3 +1,4 @@
+from io import BytesIO, StringIO
 from fastapi import APIRouter, HTTPException
 import pandas as pd
 
@@ -17,22 +18,24 @@ def get_metrics():
 
 @router.get("/places/{level}")
 def get_places(level: str):
-    match level.lower():
+    places = None
+    match level.casefold().strip():
         case "okresy":
             places = places_df[["okres_id", "okres_name"]]
             places.columns = ["id", "nazev"]
             places = places.drop_duplicates()
         case "obce":
-            places = places[["obec_id", "obec_name"]]
+            places = places_df[["obec_id", "obec_name"]]
             places.columns = ["id", "nazev"]
             places = places.drop_duplicates()
         case "kraje":
-            places = places[["kraj_id", "kraj_name"]]
+            places = places_df[["kraj_id", "kraj_name"]]
             places.columns = ["id", "nazev"]
             places = places.drop_duplicates()
         case _:
             raise HTTPException(status_code=404, detail="Unknown level. Must be one of: okresy, obce, kraje")
 
-    data = places.to_json("records")
+    places_str = StringIO(initial_value='')
+    places.to_json(places_str, orient="records")
 
-    return data
+    return places_str.getvalue()
