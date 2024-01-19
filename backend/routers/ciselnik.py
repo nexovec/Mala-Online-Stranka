@@ -35,7 +35,5 @@ def get_places(level: str):
         case _:
             raise HTTPException(status_code=404, detail="Unknown level. Must be one of: okresy, obce, kraje")
 
-    places_str = StringIO(initial_value='')
-    places.to_json(places_str, orient="records")
 
-    return places_str.getvalue()
+    return places.to_dict("records")
