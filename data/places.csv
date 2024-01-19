@@ -4003,7 +4003,7 @@ obec_id,obec_name,orp_id,orp_name,okres_id,okres_name,kraj_id,kraj_name
 565458,Prackovice nad Labem,4208,Lovosice,3506,Litoměřice,60,Ústecký kraj
 594679,Práče,6220,Znojmo,3713,Znojmo,116,Jihomoravský kraj
 558231,Prádlo,3207,Nepomuk,3406,Plzeň-jih,43,Plzeňský kraj
-554782,Praha,0,X-X-X,CZ0100,Praha,19,Hlavní město Praha
+554782,Praha,0,X-X-X,3600,Praha,19,Hlavní město Praha
 550094,Prachatice,3109,Prachatice,3306,Prachatice,35,Jihočeský kraj
 572071,Prachovice,5304,Chrudim,3603,Chrudim,94,Pardubický kraj
 592536,Prakšice,7208,Uherský Brod,3711,Uherské Hradiště,141,Zlínský kraj
