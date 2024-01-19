@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from backend.routers import data
+from routers import data
 
 app = FastAPI(
     title="HackujStat V5",
