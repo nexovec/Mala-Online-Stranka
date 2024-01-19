@@ -1,21 +1,58 @@
 .map {
-    z-index: 1;
+  z-index: 1;
 }
 
 body {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .selector {
+  position: absolute;
+  top: 1em;
+  left: 5em;
+  z-index: 2;
+  width: 20%;
+  background-color: #fff;
+  padding: 1em;
+}
+
+.selector2 {
     position: absolute;
     top: 1em;
-    left: 5em;
+    left: 35em;
     z-index: 2;
     width: 20%;
     background-color: #fff;
-    padding: 1em
+    padding: 1em;
+  }
+
+.selector div {
+  margin: 0;
 }
 
-.selector div {    
-    margin: 0;
+.timeline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  z-index: 2;
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.timeline > span {
+    height: 10px;
+}
+
+.timeline > span:nth-child(2) {
+    height: 1em;
+}
+
+.slider {
+  width: 80% !important;
+  margin: 1em;
 }
