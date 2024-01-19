@@ -1,7 +1,7 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 import pandas as pd
 
-router = APIRouter(prefix="/data", tags=["router"])
+router = APIRouter(prefix="/data", tags=["Data"])
 
 
 @router.get("/")
@@ -31,9 +31,8 @@ def read_data(
             merged_df = merged_df[["kraj_id", "hodnota"]]
             merged_df.columns = ["uzemi_id", "hodnota"]
             merged_df = merged_df.groupby("uzemi_id").sum().reset_index()
-            print(len(merged_df))
             data = merged_df.to_json(orient="records")
         case _:
-            raise ValueError("Unknown level")
+            raise HTTPException(status_code=404, detail="Unknown level. Must be one of: okresy, obce, kraje")
         
     return data
