@@ -24,3 +24,4 @@ uvicorn==0.26.0
 tinydb
 plotly
 uvicorn
+polars[all]
