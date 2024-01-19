@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { NativeSelect } from "@mantine/core";
 import Slider from "@mui/material/Slider";
 import "./style/Home.css";
+import L from 'leaflet';
 
 const Home = () => {
   const [geojsonData, setGeojsonData] = useState(null);
@@ -11,6 +12,7 @@ const Home = () => {
   const [year, setYear] = useState(2020);
   const [level, setLevel] = useState("okresy");
   const [loading, setLoading] = useState(false);
+  const [activeRegion, setActiveRegion] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,13 +60,46 @@ const Home = () => {
     );
   }
 
+  const highlightFeature = (e) => {
+    var layer = e.target;
+
+    layer.setStyle({
+      weight: 5,
+      color: '#666',
+      dashArray: '',
+      fillOpacity: 0.7,
+      fillColor: '#00f'
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+      layer.bringToFront();
+    }
+  };
+
+  const resetHighlight = (e) => {
+    var layer = e.target;
+    layer.setStyle({
+      weight: 2,
+      color: '#666',
+      dashArray: '3',
+      fillOpacity: 0.2,
+      fillColor: '#fff' // Vrátí se na původní barvu
+    });
+  };
+
   const onEachFeature = (feature, layer) => {
     layer.on({
-      click: () => {
+      click: (e) => {
+        if (activeRegion) {
+          resetHighlight({ target: activeRegion });
+        }
+        setActiveRegion(e.target);
+        highlightFeature(e);
         console.log(`ID místa: ${feature.id}`);
       }
     });
   };
+
 
   return (
     <>
@@ -118,7 +153,7 @@ const Home = () => {
             className="slider"
             value={year}
             min={2000}
-            max={2020}
+            max={2022}
             valueLabelDisplay="off"
             onChange={(e) => setYear(e.target.value)}
             step={1}

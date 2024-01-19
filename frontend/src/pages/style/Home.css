@@ -61,3 +61,22 @@ body {
     width: 50%;
     margin-left: 2em;
 }
+
+.css-14pt78w-MuiSlider-rail {
+  display: block;
+  position: absolute;
+  border-radius: inherit;
+  background-color: currentColor;
+  opacity: 0.38;
+  width: 91% !important;
+  height: 5px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.MuiSlider-track{
+max-width: 91% !important;
+}
