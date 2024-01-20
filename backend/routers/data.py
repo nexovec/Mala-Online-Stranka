@@ -19,7 +19,6 @@ def read_data(
     level: str,
     year: int,
 ):
-
     df = data_df.loc[(data_df["kodukaz"] == metric) & (data_df["rok"] == year)]
 
     match level.lower():
@@ -48,6 +47,7 @@ def read_data(
                 status_code=404,
                 detail="Unknown level. Must be one of: okresy, obce, kraje",
             )
+
     return df
 
 
@@ -76,15 +76,9 @@ def get_uzemi_matrices(uzemi):
 
 
 @router.get("/plotlygraph/{uzemiid}")
-def get_plotly_graph(uzemiid: str):
-    import plotly.express as px
-
-    # import plotly.graph_objects as go
-
-    uzemiId = 500011
+def get_plotly_graph(uzemiid: int, ukazatel: int):
     matrix = get_uzemi_matrices(uzemiid).sort("rok").collect().to_pandas()
-    uzemi_nazev = uzemi.filter(pl.col("koduzemi") == uzemiId).get_column("obec")[0]
-    ukazatel = 10300
+    uzemi_nazev = uzemi.filter(pl.col("koduzemi") == uzemiid).get_column("obec")[0]
     ukazatel_nazev = (
         ukazatele.filter(pl.col("kodukaz") == ukazatel)
         .select("nazev")
