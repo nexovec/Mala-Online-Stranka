@@ -66,11 +66,11 @@ const Home = () => {
     if (level === "obce") {
       obec = selectedFeatureId.slice(6);
     }
-
+    
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/data/spider?city=${obec}&year=${year}&level=${level}`
+          `http://localhost:5000/data/spider?place=${obec}&year=${year}&level=${level}`
         );
         const data = await response.json();
         const data2 = JSON.parse(data);
