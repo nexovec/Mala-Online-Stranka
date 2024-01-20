@@ -49,3 +49,26 @@ def get_rozsahy(metricId: int):
         "max": max(rocniky)
     }
     return res
+
+
+import polars as pl
+ukazatele = pl.read_csv("data/cis_ukazatelu.csv")
+uzemi = pl.read_csv("data/cis_uzemi.csv")
+def get_yearly_matrices(year):
+    lf = pl.scan_ipc(f"data/uzemnistatsbyyears/{str(year)}.arrow", memory_map=True)
+    return lf
+def get_uzemi_matrices(uzemi):
+    lf = pl.scan_ipc(f"data/yearlystatsbyuzemi/{str(uzemi)}.arrow", memory_map=True)
+    return lf
+@router.get("/plotlygraph/{uzemiid}")
+def get_plotly_graph(uzemiid: str):
+    import plotly.express as px
+    # import plotly.graph_objects as go
+
+    uzemiId = 500011
+    matrix = get_uzemi_matrices(uzemiid).sort("rok").collect().to_pandas()
+    uzemi_nazev = uzemi.filter(pl.col("koduzemi") == uzemiId).get_column("obec")[0]
+    ukazatel = 10300
+    ukazatel_nazev = ukazatele.filter(pl.col("kodukaz") == ukazatel).select("nazev").to_pandas()["nazev"][0]
+    fig = px.line(matrix, x="rok", y=str(ukazatel), title=f"{uzemi_nazev}: {ukazatel_nazev}")
+    return fig.to_json()
