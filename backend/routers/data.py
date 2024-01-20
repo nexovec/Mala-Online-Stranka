@@ -211,9 +211,18 @@ def get_spider(
     df.fillna(0, inplace=True)
 
     fig = px.line_polar(df, r="values", theta="krit", line_close=True, range_r=[0, 1])
+    fig.update_layout(
+        polar=dict(
+            radialaxis=dict(
+                visible=True,
+                showline=False,
+                showticklabels=False
+            )
+        )
+    )
+    fig.update_traces(fill='toself')
 
     return fig.to_json()
-
 
 
 @router.get("/flag")
