@@ -8,7 +8,7 @@ import "./style/Home.css";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import BarLoader from "react-spinners/BarLoader";
-import Plot from "react-plotlyjs";
+import Plot from "react-plotly.js";
 
 const Home = () => {
   const [geojsonData, setGeojsonData] = useState(null);
@@ -83,8 +83,7 @@ const Home = () => {
     };
 
     fetchData();
-  }, [selectedFeatureId, level]);
-
+  }, [level, selectedFeatureId]);
 
   console.log(search);
   useEffect(() => {
@@ -92,7 +91,6 @@ const Home = () => {
     if (level === "obce") {
       obec = selectedFeatureId.slice(6);
     }
-    
 
     const fetchData = async () => {
       try {
@@ -109,6 +107,8 @@ const Home = () => {
 
     fetchData();
   }, [year, selectedFeatureId, level]);
+
+  console.log(plotData);
 
   useEffect(() => {
     setLoading(true);
@@ -184,8 +184,7 @@ const Home = () => {
     }
   };
 
-  console.log(detailInfo);
-
+  //console.log(detailInfo);
 
   return (
     <>
@@ -237,7 +236,23 @@ const Home = () => {
 
       {showmodal && (
         <div className="modal">
-          <h3>{detailInfo}</h3>
+          {level === "obce" ? (
+            <>
+              <h3>{detailInfo.obec_name}</h3>
+              <h4>{detailInfo.kraj_name}</h4>
+              <h4>Okres: {detailInfo.okres_name}</h4>
+            </>
+          ) : level === "kraje" ? (  
+            <div>
+              <h3>{detailInfo.kraj_name}</h3>
+            </div>
+          ) : level === "okresy" ? (
+            <div>
+              <h3>{detailInfo.okres_name}</h3>
+              <h4>{detailInfo.kraj_name}</h4>
+            </div>
+          ) : null}
+
           <Plot
             data={plotData.data}
             layout={plotData.layout}

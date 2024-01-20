@@ -147,3 +147,27 @@ fieldset {
   height: 100%;
   width: 50%;
 }
+
+.modal h3, .modal h4 {
+  color: #333; /* Dark grey color for text */
+  margin: 10px 0;
+  font-family: 'Arial', sans-serif;
+  padding-left: 12px;
+}
+
+/* Specific styles for different heading levels */
+.modal h3 {
+  font-size: 1.5em;
+}
+
+.modal h4 {
+  font-size: 1.2em;
+}
+
+/* Special styling for plot container */
+.Plot {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #ddd; /* Light border for plot area */
+  border-radius: 5px;
+  overflow: hidden; /* Ensures plot stays within the container */
+}
