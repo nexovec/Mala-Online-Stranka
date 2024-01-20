@@ -138,7 +138,7 @@ def get_spider(
     # materske skoly
     # zakladni skoly
 
-    bydleni = [402120]
+    bydleni = [402120, 250260, 410713, 420713]
     bydleni_df = df.loc[df["kodukaz"].isin(bydleni)]
     bydleni_score = bydleni_df.loc[bydleni_df["koduzemi"] == city, "hodnota"].sum()
     bydleni_score = bydleni_score / bydleni_df["hodnota"].max()
