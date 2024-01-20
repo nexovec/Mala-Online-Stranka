@@ -294,3 +294,5 @@ cython_debug/
 test.ipynb
 
 data/rocniky
+data/uzemnistatsbyyears
+data/yearlystatsbyuzemi
