@@ -146,7 +146,7 @@ def get_spider(
     # 600808 - hriste
     # 600806 - koupaliste
 
-    priroda = [141000, 141431]
+    priroda = [141000, 141431, 141432]
     priroda_df = df.loc[df["kodukaz"].isin(priroda)]
     prir_score = priroda_df.loc[priroda_df[id_name] == place, "hodnota"].sum()
     prir_score = prir_score / priroda_df["hodnota"].max()
