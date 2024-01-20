@@ -70,7 +70,7 @@ body {
   border-radius: inherit;
   background-color: currentColor;
   opacity: 0.38;
-  width: 91% !important;
+  /*width: 91% !important; */
   height: 5px;
   top: 50%;
   -webkit-transform: translateY(-50%);
@@ -80,7 +80,7 @@ body {
 }
 
 .MuiSlider-track{
-max-width: 91% !important;
+/*max-width: 91% !important; */
 }
 
 .search {
@@ -108,6 +108,18 @@ fieldset {
   z-index: 2;
   width: 20em;
   background-color: #fff;
+}
+
+.modal button {
+  right: -0.5em;
+  top: -0.5em;
+  position: absolute;
+  z-index: 2;
+  background-color: red;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
 }
 
 .year {

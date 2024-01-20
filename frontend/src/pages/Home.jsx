@@ -14,17 +14,24 @@ const Home = () => {
   const [geojsonData, setGeojsonData] = useState(null);
   const [data, setData] = useState([]);
   const [searchChoice, setSearchChoice] = useState([]);
-  const [search, setSearch] = useState([]);
+  //const [search, setSearch] = useState([]);
   const [year, setYear] = useState(2020);
   const [level, setLevel] = useState("okresy");
   const [loading, setLoading] = useState(false);
-  const [selectedArea, setSelectedArea] = useState(); //uchovává vybrané uzemí
+  //const [selectedArea, setSelectedArea] = useState(); //uchovává vybrané uzemí
   const [selectedFeatureId, setSelectedFeatureId] = useState(null);
   const [plotData, setPlotData] = useState([]);
+  const [plotData2, setPlotData2] = useState([]);
   const [showmodal, setShowmodal] = useState(null);
   const [detailInfo, setDetailInfo] = useState(null);
+  const [metric, setMetric] = useState(70720);
 
-  // Function to handle click event on a GeoJSON feature
+  // Function to handle click event on a GeoJSON featurev
+
+
+  const closeModal = () => {
+    setShowmodal(null);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,7 +92,6 @@ const Home = () => {
     fetchData();
   }, [level, selectedFeatureId]);
 
-  console.log(search);
   useEffect(() => {
     let obec = selectedFeatureId;
     if (level === "obce") {
@@ -108,7 +114,29 @@ const Home = () => {
     fetchData();
   }, [year, selectedFeatureId, level]);
 
-  console.log(plotData);
+  useEffect(() => {
+    let obec = selectedFeatureId;
+    if (level === "obce") {
+      obec = selectedFeatureId.slice(6);
+    }
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/data/plotlygraph?place=${obec}&metric=${metric}&level=${level}`
+        );
+        const data = await response.json();
+        const data2 = JSON.parse(data);
+        setPlotData2(data2);
+      } catch (error) {
+        console.error("Chyba při načítání dat:", error);
+      }
+    };
+
+    fetchData();
+  }, [year, selectedFeatureId, level, metric]);
+
+
 
   useEffect(() => {
     setLoading(true);
@@ -166,7 +194,6 @@ const Home = () => {
     if (level === "obce") {
       id = feature.id;
     }
-
     if (id === selectedFeatureId) {
       return {
         fillColor: "blue",
@@ -182,30 +209,31 @@ const Home = () => {
         weight: 1.5,
       };
     }
-  };
-
-  //console.log(detailInfo);
+};
+  
 
   return (
     <>
       <MapContainer
-        center={[49.8442, 13.3633]}
+        center={[49.5214, 15.3547]}
         zoom={8}
         scrollWheelZoom={true}
         style={{ height: "100vh", width: "100%" }}
         className="map"
       >
-        {geojsonData && (
-          <GeoJSON
-            data={geojsonData}
-            style={geoJSONStyle}
-            //onEachFeature={onEachFeature}
-            eventHandlers={{
-              click: onFeatureClick, // Add the click event handler
-              dblclick: onFeatureDblClick,
-            }}
-          />
-        )}
+{
+  geojsonData && (
+    <GeoJSON
+      data={geojsonData}
+      style={geoJSONStyle}
+      eventHandlers={{
+        click: onFeatureClick, // Add the click event handler
+        dblclick: onFeatureDblClick,
+      }}
+    />
+  )
+}
+
 
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -223,26 +251,36 @@ const Home = () => {
             <TextField
               {...params}
               label=""
-              placeholder={selectedArea || "Vyhledávač"}
+              placeholder={"Vyhledávač"}
             />
           )}
           onChange={(event, newValue) => {
-            setSearch(newValue ? newValue.id : null);
-            setSelectedArea(newValue ? newValue.name : null);
+            if (newValue) {
+              setSelectedFeatureId(newValue.id);
+              console.log(newValue.id);
+              //setSearch(newValue.id);
+              setShowmodal(true);
+              //setSelectedArea(newValue.name);
+            } else {
+              setSelectedFeatureId(null);
+              //setSearch(null);
+              //setSelectedArea(null);
+            }
           }}
           getOptionSelected={(option, value) => option.id === value.id}
         />
       </div>
 
-      {showmodal && (
+      {showmodal && detailInfo && (
         <div className="modal">
+          <button onClick={closeModal}>X</button>
           {level === "obce" ? (
             <>
               <h3>{detailInfo.obec_name}</h3>
               <h4>{detailInfo.kraj_name}</h4>
               <h4>Okres: {detailInfo.okres_name}</h4>
             </>
-          ) : level === "kraje" ? (  
+          ) : level === "kraje" ? (
             <div>
               <h3>{detailInfo.kraj_name}</h3>
             </div>
@@ -258,6 +296,12 @@ const Home = () => {
             layout={plotData.layout}
             style={{ width: "100%", height: "400px" }}
           />
+
+          <Plot
+            data={plotData2.data}
+            layout={plotData2.layout}
+            style={{ width: "100%", height: "200px" }}
+          />
         </div>
       )}
 
@@ -266,9 +310,11 @@ const Home = () => {
           mt="md"
           label="Výběr ukazatele"
           data={data.map((item) => ({
-            value: item.value,
+            value: item.id, // Assuming each item has an 'id' field
             label: item.nazev,
           }))}
+          value={metric}
+          onChange={(e) => setMetric(e.target.value)}
         />
 
         <NativeSelect
@@ -289,13 +335,13 @@ const Home = () => {
             className="slider"
             value={year}
             min={2000}
-            max={2022}
+            max={2020}
             valueLabelDisplay="off"
             onChange={(e) => setYear(e.target.value)}
             step={1}
             marks
           />
-          <h3>2022</h3>
+          <h3>2020</h3>
         </div>
         <div className="year">
           <h3>Vybraný rok: {year}</h3>
