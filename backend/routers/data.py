@@ -178,7 +178,7 @@ def get_spider(
     )
     # byty
 
-    zdravotnictvi = [70300, 71000, 70200]
+    zdravotnictvi = [70300, 71000, 70200, 70700, 70720, 70730, 70800]
     zdravotnictvi_df = df.loc[df["kodukaz"].isin(zdravotnictvi)]
     zdravotnictvi_score = zdravotnictvi_df.loc[
         zdravotnictvi_df[id_name] == place, "hodnota"
