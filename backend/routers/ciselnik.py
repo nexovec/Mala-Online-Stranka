@@ -44,22 +44,16 @@ def get_places(level: str):
 
 @router.get("/getUzemiInfoById/")
 def get_places_by_id(id: int, level: str):
-    # place = places_df.loc[
-    #     (places_df["obec_id"] == id)
-    #     | (places_df["okres_id"] == id)
-    #     | (places_df["kraj_id"] == id)
-    # ]
-    # return place.to_dict("records")[0]
     match level.lower():
         case "okresy":
             place = places_df.loc[places_df["okres_id"] == id]
-            return place.to_dict("records")[0]
+            return place.to_dict("records")
         case "obce":
             place = places_df.loc[places_df["obec_id"] == id]
-            return place.to_dict("records")[0]
+            return place.to_dict("records")
         case "kraje":
             place = places_df.loc[places_df["kraj_id"] == id]
-            return place.to_dict("records")[0]
+            return place.to_dict("records")
         case _:
             raise HTTPException(
                 status_code=404,
