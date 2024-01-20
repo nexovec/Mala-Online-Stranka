@@ -23,9 +23,7 @@ def read_data(
 
     match level.lower():
         case "okresy":
-            merged_df = pd.merge(
-                df, places, left_on="koduzemi", right_on="obec_id"
-            )
+            merged_df = pd.merge(df, places, left_on="koduzemi", right_on="obec_id")
             merged_df = merged_df[["okres_id", "hodnota"]]
             merged_df.columns = ["uzemi_id", "hodnota"]
             merged_df = merged_df.groupby("uzemi_id").sum().reset_index()
@@ -35,9 +33,7 @@ def read_data(
             df.columns = ["uzemi_id", "hodnota"]
             df = df.to_json(orient="records")
         case "kraje":
-            merged_df = pd.merge(
-                df, places, left_on="koduzemi", right_on="obec_id"
-            )
+            merged_df = pd.merge(df, places, left_on="koduzemi", right_on="obec_id")
             merged_df = merged_df[["kraj_id", "hodnota"]]
             merged_df.columns = ["uzemi_id", "hodnota"]
             merged_df = merged_df.groupby("uzemi_id").sum().reset_index()
@@ -75,17 +71,35 @@ def get_uzemi_matrices(uzemi):
     return lf
 
 
-@router.get("/plotlygraph/{uzemiid}")
-def get_plotly_graph(uzemiid: int, ukazatel: int):
-    matrix = get_uzemi_matrices(uzemiid).sort("rok").collect().to_pandas()
-    uzemi_nazev = uzemi.filter(pl.col("koduzemi") == uzemiid).get_column("obec")[0]
-    ukazatel_nazev = (
-        ukazatele.filter(pl.col("kodukaz") == ukazatel)
-        .select("nazev")
-        .to_pandas()["nazev"][0]
-    )
+@router.get("/plotlygraph")
+def get_plotly_graph(place: int, metric: int, level: str):
+    df = data_df[["rok", "kodukaz", "koduzemi", "hodnota"]]
+
+    df = df.loc[df["kodukaz"] == metric]
+
+    match level.lower():
+        case "kraje":
+            df = pd.merge(df, places, left_on="koduzemi", right_on="obec_id")
+            df = df.loc[df["kraj_id"] == place]
+            df = df[["rok", "kodukaz", "kraj_id", "hodnota"]]
+            df = df.groupby(["rok", "kodukaz", "kraj_id"]).sum().reset_index()
+        case "okresy":
+            df = pd.merge(df, places, left_on="koduzemi", right_on="obec_id")
+            df = df.loc[df["okres_id"] == place]
+            df = df[["rok", "kodukaz", "okres_id", "hodnota"]]
+            df = df.groupby(["rok", "kodukaz", "okres_id"]).sum().reset_index()
+        case "obce":
+            df = df[["rok", "kodukaz", "koduzemi", "hodnota"]]
+        case _:
+            raise HTTPException(
+                status_code=404,
+                detail="Unknown level. Must be one of: okresy, obce, kraje",
+            )
+
     fig = px.line(
-        matrix, x="rok", y=str(ukazatel), title=f"{uzemi_nazev}: {ukazatel_nazev}"
+        df,
+        x="rok",
+        y="hodnota",
     )
 
     return fig.to_json()
