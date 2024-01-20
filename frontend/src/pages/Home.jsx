@@ -60,6 +60,27 @@ const Home = () => {
 
     fetchData();
   }, [level]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/ciselnik/getUzemiInfoById/565709${level}`
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const json = await response.json();
+        setSearchChoice(json);
+      } catch (error) {
+        console.error("Chyba při načítání dat:", error);
+      }
+    };
+
+    fetchData();
+  }, [level]);
+
+
   console.log(search);
   useEffect(() => {
     let obec = selectedFeatureId;
