@@ -7,6 +7,7 @@ router = APIRouter(prefix="/ciselnik", tags=["Číselníky"])
 places_df = pd.read_csv("data/places.csv")
 ukazatele_df = pd.read_csv("data/cis_ukazatelu.csv")
 
+
 @router.get("/metrics")
 def get_metrics():
     df = ukazatele_df[["kodukaz", "nazev"]]
@@ -33,7 +34,9 @@ def get_places(level: str):
             places.columns = ["id", "nazev"]
             places = places.drop_duplicates()
         case _:
-            raise HTTPException(status_code=404, detail="Unknown level. Must be one of: okresy, obce, kraje")
-
+            raise HTTPException(
+                status_code=404,
+                detail="Unknown level. Must be one of: okresy, obce, kraje",
+            )
 
     return places.to_dict("records")
