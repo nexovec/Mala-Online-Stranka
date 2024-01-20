@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .routers import data, ciselnik
+from routers import data, ciselnik
 
 app = FastAPI(
     title="HackujStat V5",
