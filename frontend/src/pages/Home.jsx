@@ -7,6 +7,7 @@ import "./style/Home.css";
 //import L from "leaflet";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import BarLoader from "react-spinners/BarLoader";
 
 const Home = () => {
   const [geojsonData, setGeojsonData] = useState(null);
@@ -21,8 +22,6 @@ const Home = () => {
 
   // Function to handle click event on a GeoJSON feature
 
-
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -85,8 +84,9 @@ const Home = () => {
 
   if (loading) {
     return (
-      <div>
-        <h1>Načítání dat...</h1>
+      <div className="loading-container">
+        <img src="logo.png" alt="cloudovi bratri" />
+        <BarLoader color="#010619" height={20} loading width={400} />
       </div>
     );
   }
@@ -96,6 +96,8 @@ const Home = () => {
     const featureId = e.layer.feature.nationalCode;
     setSelectedFeatureId(featureId); // Update the selected feature ID
   };
+
+  const onFeatureDblClick = (e) => {};
 
   const geoJSONStyle = (feature) => {
     // Check if this feature is the selected one
@@ -134,6 +136,7 @@ const Home = () => {
             //onEachFeature={onEachFeature}
             eventHandlers={{
               click: onFeatureClick, // Add the click event handler
+              dblclick: onFeatureDblClick,
             }}
           />
         )}
