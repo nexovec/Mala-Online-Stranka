@@ -4,7 +4,7 @@ import json
 
 router = APIRouter(prefix="/data", tags=["Data"])
 
-data_df = pd.read_parquet("data/data.parquet")
+data_df = pd.read_parquet("data/data.parquet").dropna(axis=1, how="all")
 
 @router.get("/")
 def read_data(
