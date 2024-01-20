@@ -47,13 +47,19 @@ def get_places_by_id(id: int, level: str):
     match level.lower():
         case "okresy":
             place = places_df.loc[places_df["okres_id"] == id]
-            return place.to_dict("records")
+            if id == 3100:
+                return place.to_dict("records")
+            
+            return place.to_dict("records")[0]
         case "obce":
             place = places_df.loc[places_df["obec_id"] == id]
-            return place.to_dict("records")
+            return place.to_dict("records")[0]
         case "kraje":
             place = places_df.loc[places_df["kraj_id"] == id]
-            return place.to_dict("records")
+            if id == 19:
+                return place.to_dict("records")
+            
+            return place.to_dict("records")[0]
         case _:
             raise HTTPException(
                 status_code=404,

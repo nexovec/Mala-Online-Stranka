@@ -1,7 +1,7 @@
 # HackujStatV
 
 **Název aplikace:** M.O.S. - *Malá online stránka*
-**Datové zdroje:** 
+**Datové zdroje:**
     - [ČSÚ](https://www.czso.cz/csu/czso/databaze-mos-otevrena-data)
 
 ## Odkazy
