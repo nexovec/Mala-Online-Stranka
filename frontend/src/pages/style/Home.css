@@ -17,8 +17,9 @@ body {
     justify-content: fle;
     width: 20em;
     height: auto;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 1);
     padding: 1em;
+    border-radius: 20px;
 }
 
 .selectors div {
@@ -79,10 +80,6 @@ body {
   transform: translateY(-50%);
 }
 
-.MuiSlider-track{
-/*max-width: 91% !important; */
-}
-
 .search {
   position: absolute;
   top: 1em;
@@ -108,11 +105,15 @@ fieldset {
   z-index: 2;
   width: 20em;
   background-color: #fff;
+  max-height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 20px;
 }
 
 .modal button {
-  right: -0.5em;
-  top: -0.5em;
+  right: 0em;
+  top: 0em;
   position: absolute;
   z-index: 2;
   background-color: red;
@@ -182,4 +183,11 @@ fieldset {
   border: 1px solid #ddd; /* Light border for plot area */
   border-radius: 5px;
   overflow: hidden; /* Ensures plot stays within the container */
+}
+
+
+.flag {
+  width: 20%;
+ height: 100%;
+ margin-left: 1em;
 }

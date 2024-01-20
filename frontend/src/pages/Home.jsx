@@ -28,7 +28,6 @@ const Home = () => {
 
   // Function to handle click event on a GeoJSON featurev
 
-
   const closeModal = () => {
     setShowmodal(null);
   };
@@ -77,7 +76,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/ciselnik/getUzemiInfoById/${obec}`
+          `http://localhost:5000/ciselnik/getUzemiInfoById?id=${obec}&level=${level}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -135,8 +134,6 @@ const Home = () => {
 
     fetchData();
   }, [year, selectedFeatureId, level, metric]);
-
-
 
   useEffect(() => {
     setLoading(true);
@@ -209,8 +206,9 @@ const Home = () => {
         weight: 1.5,
       };
     }
-};
-  
+  };
+
+  console.log(selectedFeatureId);
 
   return (
     <>
@@ -221,19 +219,16 @@ const Home = () => {
         style={{ height: "100vh", width: "100%" }}
         className="map"
       >
-{
-  geojsonData && (
-    <GeoJSON
-      data={geojsonData}
-      style={geoJSONStyle}
-      eventHandlers={{
-        click: onFeatureClick, // Add the click event handler
-        dblclick: onFeatureDblClick,
-      }}
-    />
-  )
-}
-
+        {geojsonData && (
+          <GeoJSON
+            data={geojsonData}
+            style={geoJSONStyle}
+            eventHandlers={{
+              click: onFeatureClick, // Add the click event handler
+              dblclick: onFeatureDblClick,
+            }}
+          />
+        )}
 
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -248,11 +243,7 @@ const Home = () => {
           getOptionLabel={(option) => option.nazev}
           options={Array.isArray(searchChoice) ? searchChoice : []}
           renderInput={(params) => (
-            <TextField
-              {...params}
-              label=""
-              placeholder={"Vyhledávač"}
-            />
+            <TextField {...params} label="" placeholder={"Vyhledávač"} />
           )}
           onChange={(event, newValue) => {
             if (newValue) {
@@ -290,6 +281,14 @@ const Home = () => {
               <h4>{detailInfo.kraj_name}</h4>
             </div>
           ) : null}
+
+          {level === "obce" && (
+          <img
+            src={`http://localhost:5000/data/flag?place=${selectedFeatureId.slice(6)}`}
+            alt="Flag"
+            className="flag"
+          />
+          )}
 
           <Plot
             data={plotData.data}
