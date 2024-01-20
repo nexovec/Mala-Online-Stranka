@@ -80,3 +80,16 @@ body {
 .MuiSlider-track{
 max-width: 91% !important;
 }
+
+.search {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  z-index: 2;
+  width: 20em;
+  background-color: #fff;
+}
+
+.search-bar {
+  border-radius: 20px !important;
+}

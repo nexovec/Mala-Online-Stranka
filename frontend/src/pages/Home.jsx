@@ -4,15 +4,19 @@ import { useEffect, useState } from "react";
 import { NativeSelect } from "@mantine/core";
 import Slider from "@mui/material/Slider";
 import "./style/Home.css";
-import L from 'leaflet';
+import L from "leaflet";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 
 const Home = () => {
   const [geojsonData, setGeojsonData] = useState(null);
   const [data, setData] = useState([]);
+  const [searchChoice, setSearchChoice] = useState([]);
+  const [search, setSearch] = useState([]);
   const [year, setYear] = useState(2020);
   const [level, setLevel] = useState("okresy");
   const [loading, setLoading] = useState(false);
-  const [activeRegion, setActiveRegion] = useState(null);
+  const [selectedArea, setSelectedArea] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,6 +34,25 @@ const Home = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/ciselnik/places/${level}`
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const json = await response.json();
+        setSearchChoice(json);
+      } catch (error) {
+        console.error("Chyba při načítání dat:", error);
+      }
+    };
+
+    fetchData();
+  }, [level]);
 
   useEffect(() => {
     setLoading(true);
@@ -60,45 +83,60 @@ const Home = () => {
     );
   }
 
-  const highlightFeature = (e) => {
-    var layer = e.target;
+  let highlightedLayer = null; 
+
+  const resetHighlight = () => {
+    if (highlightedLayer) {
+      highlightedLayer.setStyle({
+        fillColor: "#1976d2",
+        fillOpacity: 0.1,
+        color: "black",
+        weight: 1.5,
+      });
+    }
+  };
+
+  const highlightFeature = (layer) => {
+    if(!selectedArea) {
+      resetHighlight();
+    }
 
     layer.setStyle({
       weight: 5,
-      color: '#666',
-      dashArray: '',
+      color: "#666",
+      dashArray: "",
       fillOpacity: 0.7,
-      fillColor: '#00f'
+      fillColor: "#00f",
     });
 
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
       layer.bringToFront();
     }
-  };
 
-  const resetHighlight = (e) => {
-    var layer = e.target;
-    layer.setStyle({
-      weight: 2,
-      color: '#666',
-      dashArray: '3',
-      fillOpacity: 0.2,
-      fillColor: '#fff' // Vrátí se na původní barvu
-    });
+    highlightedLayer = layer;
+
+    const areaName = layer.feature.nazev;
+    setSelectedArea(areaName);
+    console.log(selectedArea);
   };
 
   const onEachFeature = (feature, layer) => {
     layer.on({
-      click: (e) => {
-        if (activeRegion) {
-          resetHighlight({ target: activeRegion });
-        }
-        setActiveRegion(e.target);
-        highlightFeature(e);
-        console.log(`ID místa: ${feature.id}`);
-      }
+      click: () => {
+        highlightFeature(layer);
+        console.log(`ID místa: ${feature.nationalCode}`);
+      },
+      dblclick: () => {
+        const centroid = layer.getBounds().getCenter();
+        console.log(centroid);
+        console.log("Ahoj");
+      },
     });
   };
+  
+
+  console.log(search);
+
 
 
   return (
@@ -114,7 +152,7 @@ const Home = () => {
           <GeoJSON
             data={geojsonData}
             style={geoJSONStyle}
-            onEachFeature={onEachFeature} 
+            onEachFeature={onEachFeature}
           />
         )}
 
@@ -123,6 +161,28 @@ const Home = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
       </MapContainer>
+
+      <div className="search">
+        <Autocomplete
+          freeSolo
+          className="search-bar"
+          getOptionLabel={(option) => option.nazev}
+          options={Array.isArray(searchChoice) ? searchChoice : []}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label=""
+              placeholder="Vyhledávač"
+              value={selectedArea || ""}
+            />
+          )}
+          onChange={(event, newValue) => {
+            setSearch(newValue ? newValue.id : null);
+            setSelectedArea(newValue ? newValue.nazev : null);
+          }}
+          getOptionSelected={(option, value) => option.id === value.id}
+        />
+      </div>
 
       <div className="selectors">
         <NativeSelect
