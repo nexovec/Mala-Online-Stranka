@@ -35,7 +35,7 @@ body {
   background-color: #fff;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   border-radius: 20px 20px 0 0;
 }
@@ -58,7 +58,7 @@ body {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    width: 50%;
+    width: 100%;
     margin-left: 2em;
 }
 
@@ -92,4 +92,22 @@ max-width: 91% !important;
 
 .search-bar {
   border-radius: 20px !important;
+}
+
+.modal {
+  position: absolute;
+  top: 5em;
+  right: 1em;
+  z-index: 2;
+  width: 20em;
+  background-color: #fff;
+}
+
+.year {
+ margin-left: 1em;
+ display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }

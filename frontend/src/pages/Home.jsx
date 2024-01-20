@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { NativeSelect } from "@mantine/core";
 import Slider from "@mui/material/Slider";
 import "./style/Home.css";
-import L from "leaflet";
+//import L from "leaflet";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
@@ -16,8 +16,13 @@ const Home = () => {
   const [year, setYear] = useState(2020);
   const [level, setLevel] = useState("okresy");
   const [loading, setLoading] = useState(false);
-  const [selectedArea, setSelectedArea] = useState(null);
+  const [selectedArea, setSelectedArea] = useState(); //uchovává vybrané uzemí
+  const [selectedFeatureId, setSelectedFeatureId] = useState(null);
 
+  // Function to handle click event on a GeoJSON feature
+
+
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -66,6 +71,7 @@ const Home = () => {
       });
   }, [level]);
 
+  /*
   const geoJSONStyle = (feature) => {
     return {
       fillColor: "#1976d2",
@@ -75,6 +81,8 @@ const Home = () => {
     };
   };
 
+  */
+
   if (loading) {
     return (
       <div>
@@ -83,61 +91,32 @@ const Home = () => {
     );
   }
 
-  let highlightedLayer = null; 
+  const onFeatureClick = (e) => {
+    console.log(e.layer.feature.nationalCode);
+    const featureId = e.layer.feature.nationalCode;
+    setSelectedFeatureId(featureId); // Update the selected feature ID
+  };
 
-  const resetHighlight = () => {
-    if (highlightedLayer) {
-      highlightedLayer.setStyle({
+  const geoJSONStyle = (feature) => {
+    // Check if this feature is the selected one
+    if (feature.nationalCode === selectedFeatureId) {
+      return {
+        fillColor: "blue",
+        fillOpacity: 0.5,
+        color: "black",
+        weight: 2,
+      };
+    } else {
+      return {
         fillColor: "#1976d2",
         fillOpacity: 0.1,
         color: "black",
         weight: 1.5,
-      });
+      };
     }
   };
-
-  const highlightFeature = (layer) => {
-    if(!selectedArea) {
-      resetHighlight();
-    }
-
-    layer.setStyle({
-      weight: 5,
-      color: "#666",
-      dashArray: "",
-      fillOpacity: 0.7,
-      fillColor: "#00f",
-    });
-
-    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-      layer.bringToFront();
-    }
-
-    highlightedLayer = layer;
-
-    const areaName = layer.feature.nazev;
-    setSelectedArea(areaName);
-    console.log(selectedArea);
-  };
-
-  const onEachFeature = (feature, layer) => {
-    layer.on({
-      click: () => {
-        highlightFeature(layer);
-        console.log(`ID místa: ${feature.nationalCode}`);
-      },
-      dblclick: () => {
-        const centroid = layer.getBounds().getCenter();
-        console.log(centroid);
-        console.log("Ahoj");
-      },
-    });
-  };
-  
 
   console.log(search);
-
-
 
   return (
     <>
@@ -152,7 +131,10 @@ const Home = () => {
           <GeoJSON
             data={geojsonData}
             style={geoJSONStyle}
-            onEachFeature={onEachFeature}
+            //onEachFeature={onEachFeature}
+            eventHandlers={{
+              click: onFeatureClick, // Add the click event handler
+            }}
           />
         )}
 
@@ -172,17 +154,25 @@ const Home = () => {
             <TextField
               {...params}
               label=""
-              placeholder="Vyhledávač"
-              value={selectedArea || ""}
+              placeholder={selectedArea || "Vyhledávač"}
             />
           )}
           onChange={(event, newValue) => {
             setSearch(newValue ? newValue.id : null);
-            setSelectedArea(newValue ? newValue.nazev : null);
+            setSelectedArea(newValue ? newValue.name : null);
           }}
           getOptionSelected={(option, value) => option.id === value.id}
         />
       </div>
+
+      {/*
+      <div className="modal">
+        <h3>{selectedArea}</h3>
+
+
+      </div>
+
+      */}
 
       <div className="selectors">
         <NativeSelect
@@ -220,7 +210,9 @@ const Home = () => {
             marks
           />
           <h3>2022</h3>
-          <h3>{year}</h3>
+        </div>
+        <div className="year">
+          <h3>Vybraný rok: {year}</h3>
         </div>
       </div>
     </>
