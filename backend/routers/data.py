@@ -1,8 +1,11 @@
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import FileResponse
 import pandas as pd
 import json
 import plotly.express as px
 import polars as pl
+import requests
+import tempfile
 
 router = APIRouter(prefix="/data", tags=["Data"])
 
@@ -143,7 +146,7 @@ def get_spider(
     # 600808 - hriste
     # 600806 - koupaliste
 
-    priroda = [141000, 141431]
+    priroda = [141000, 141431, 141432]
     priroda_df = df.loc[df["kodukaz"].isin(priroda)]
     prir_score = priroda_df.loc[priroda_df[id_name] == place, "hodnota"].sum()
     prir_score = prir_score / priroda_df["hodnota"].max()
@@ -165,7 +168,7 @@ def get_spider(
     # materske skoly
     # zakladni skoly
 
-    bydleni = [402120, 250260, 410713, 420713]
+    bydleni = [402120, 250260, 410713, 420713, 250230, 410701, 420701]
     bydleni_df = df.loc[df["kodukaz"].isin(bydleni)]
     bydleni_score = bydleni_df.loc[bydleni_df[id_name] == place, "hodnota"].sum()
     bydleni_score = bydleni_score / bydleni_df["hodnota"].max()
@@ -208,5 +211,37 @@ def get_spider(
     df.fillna(0, inplace=True)
 
     fig = px.line_polar(df, r="values", theta="krit", line_close=True, range_r=[0, 1])
+    fig.update_layout(
+        polar=dict(
+            radialaxis=dict(
+                visible=True,
+                showline=False,
+                showticklabels=False
+            )
+        )
+    )
+    fig.update_traces(fill='toself')
 
     return fig.to_json()
+
+
+@router.get("/flag")
+def get_image(place: int):
+    try:
+        if not isinstance(place, int) or place <= 0:
+            raise ValueError("Invalid place value")
+
+        url = f"https://www.vexi.info/vexibaze/obr/{place}.gif"
+
+        img_response = requests.get(url)
+
+        if img_response.status_code == 200:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".gif") as temp_file:
+                temp_file.write(img_response.content)
+
+            return FileResponse(temp_file.name, media_type="image/gif", filename=f"flag_{place}.gif")
+        else:
+            raise HTTPException(status_code=img_response.status_code, detail="Image not found")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
