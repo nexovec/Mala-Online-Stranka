@@ -93,6 +93,8 @@ def get_plotly_graph(uzemiid: str):
     fig = px.line(
         matrix, x="rok", y=str(ukazatel), title=f"{uzemi_nazev}: {ukazatel_nazev}"
     )
+    
+    return fig.to_json()
 
 
 @router.get("/spider")
