@@ -8,7 +8,7 @@ import "./style/Home.css";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import BarLoader from "react-spinners/BarLoader";
-import Plot from "react-plotly.js";
+import Plot from "react-plotlyjs";
 
 const Home = () => {
   const [geojsonData, setGeojsonData] = useState(null);
@@ -22,6 +22,7 @@ const Home = () => {
   const [selectedFeatureId, setSelectedFeatureId] = useState(null);
   const [plotData, setPlotData] = useState([]);
   const [showmodal, setShowmodal] = useState(null);
+  const [detailInfo, setDetailInfo] = useState(null);
 
   // Function to handle click event on a GeoJSON feature
 
@@ -62,23 +63,27 @@ const Home = () => {
   }, [level]);
 
   useEffect(() => {
+    let obec = selectedFeatureId;
+    if (level === "obce") {
+      obec = selectedFeatureId.slice(6);
+    }
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/ciselnik/getUzemiInfoById/565709${level}`
+          `http://localhost:5000/ciselnik/getUzemiInfoById/${obec}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const json = await response.json();
-        setSearchChoice(json);
+        setDetailInfo(json);
       } catch (error) {
         console.error("Chyba při načítání dat:", error);
       }
     };
 
     fetchData();
-  }, [level]);
+  }, [selectedFeatureId, level]);
 
 
   console.log(search);
@@ -162,8 +167,6 @@ const Home = () => {
       id = feature.id;
     }
 
-    console.log(id);
-
     if (id === selectedFeatureId) {
       return {
         fillColor: "blue",
@@ -180,6 +183,8 @@ const Home = () => {
       };
     }
   };
+
+  console.log(detailInfo);
 
 
   return (
@@ -232,7 +237,7 @@ const Home = () => {
 
       {showmodal && (
         <div className="modal">
-          <h3>{showmodal}</h3>
+          <h3>{detailInfo}</h3>
           <Plot
             data={plotData.data}
             layout={plotData.layout}
