@@ -16,7 +16,6 @@ def get_metrics():
     data = df.to_dict("records")
     return data
 
-
 @router.get("/places/{level}")
 def get_places(level: str):
     places = None
@@ -40,3 +39,8 @@ def get_places(level: str):
             )
 
     return places.to_dict("records")
+
+@router.get("/getUzemiInfoById/{id}")
+def get_places_by_id(id: int):
+    place = places_df.loc[(places_df["obec_id"] == id)  | (places_df["okres_id"] == id) | (places_df["kraj_id"] == id)]
+    return place.to_dict("records")[0]
