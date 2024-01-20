@@ -1,8 +1,11 @@
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import FileResponse
 import pandas as pd
 import json
 import plotly.express as px
 import polars as pl
+import requests
+import tempfile
 
 router = APIRouter(prefix="/data", tags=["Data"])
 
@@ -210,3 +213,26 @@ def get_spider(
     fig = px.line_polar(df, r="values", theta="krit", line_close=True, range_r=[0, 1])
 
     return fig.to_json()
+
+
+
+@router.get("/flag")
+def get_image(place: int):
+    try:
+        if not isinstance(place, int) or place <= 0:
+            raise ValueError("Invalid place value")
+
+        url = f"https://www.vexi.info/vexibaze/obr/{place}.gif"
+
+        img_response = requests.get(url)
+
+        if img_response.status_code == 200:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".gif") as temp_file:
+                temp_file.write(img_response.content)
+
+            return FileResponse(temp_file.name, media_type="image/gif", filename=f"flag_{place}.gif")
+        else:
+            raise HTTPException(status_code=img_response.status_code, detail="Image not found")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
