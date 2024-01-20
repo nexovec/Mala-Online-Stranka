@@ -60,13 +60,14 @@ const Home = () => {
 
     fetchData();
   }, [level]);
-
+  console.log(search);
   useEffect(() => {
     let obec = selectedFeatureId;
     if (level === "obce") {
       obec = selectedFeatureId.slice(6);
     }
     
+
     const fetchData = async () => {
       try {
         const response = await fetch(
