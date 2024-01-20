@@ -32,13 +32,15 @@ body {
   width: 100%;
   overflow: hidden;
   z-index: 2;
-  background-color: #fff;
+  /*background: linear-gradient(to bottom, #ffffff, #58b7e3b4);  */
+  background-color: #ffff;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   border-radius: 20px 20px 0 0;
 }
+
 
 .timeline > span {
     height: 10px;
@@ -131,4 +133,17 @@ fieldset {
 .loading-container img{
   width: 30%;
 
+}
+
+.logo-small img {
+  width: 100px;
+}
+
+.logo-small {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+  width: 50%;
 }

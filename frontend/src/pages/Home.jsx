@@ -8,6 +8,7 @@ import "./style/Home.css";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import BarLoader from "react-spinners/BarLoader";
+import Plot from "react-plotly.js";
 
 const Home = () => {
   const [geojsonData, setGeojsonData] = useState(null);
@@ -19,6 +20,8 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [selectedArea, setSelectedArea] = useState(); //uchovává vybrané uzemí
   const [selectedFeatureId, setSelectedFeatureId] = useState(null);
+  const [plotData, setPlotData] = useState([]);
+  const [showmodal, setShowmodal] = useState(null);
 
   // Function to handle click event on a GeoJSON feature
 
@@ -59,6 +62,28 @@ const Home = () => {
   }, [level]);
 
   useEffect(() => {
+    let obec = selectedFeatureId;
+    if (level === "obce") {
+      obec = selectedFeatureId.slice(6);
+    }
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/data/spider?city=${obec}&year=${year}&level=${level}`
+        );
+        const data = await response.json();
+        const data2 = JSON.parse(data);
+        setPlotData(data2);
+      } catch (error) {
+        console.error("Chyba při načítání dat:", error);
+      }
+    };
+
+    fetchData();
+  }, [year, selectedFeatureId, level]);
+
+  useEffect(() => {
     setLoading(true);
     setGeojsonData(null);
     fetch(`${level}.json`)
@@ -66,7 +91,6 @@ const Home = () => {
       .then((data) => {
         setGeojsonData(data);
         setLoading(false);
-        console.log(data);
       });
   }, [level]);
 
@@ -92,16 +116,33 @@ const Home = () => {
   }
 
   const onFeatureClick = (e) => {
-    console.log(e.layer.feature.nationalCode);
-    const featureId = e.layer.feature.nationalCode;
-    setSelectedFeatureId(featureId); // Update the selected feature ID
+    if (level === "obce") {
+      const featureId = e.layer.feature.id;
+      setSelectedFeatureId(featureId);
+    } else {
+      const featureId = e.layer.feature.nationalCode;
+      setSelectedFeatureId(featureId);
+    }
+    setShowmodal(null);
   };
 
-  const onFeatureDblClick = (e) => {};
+  const onFeatureDblClick = (e) => {
+    if (level === "obce") {
+      setShowmodal(e.layer.feature.id.slice(6));
+    } else {
+      setShowmodal(e.layer.feature.nationalCode);
+    }
+  };
 
   const geoJSONStyle = (feature) => {
-    // Check if this feature is the selected one
-    if (feature.nationalCode === selectedFeatureId) {
+    let id = feature.nationalCode;
+    if (level === "obce") {
+      id = feature.id;
+    }
+
+    console.log(id);
+
+    if (id === selectedFeatureId) {
       return {
         fillColor: "blue",
         fillOpacity: 0.5,
@@ -118,7 +159,6 @@ const Home = () => {
     }
   };
 
-  console.log(search);
 
   return (
     <>
@@ -168,14 +208,16 @@ const Home = () => {
         />
       </div>
 
-      {/*
-      <div className="modal">
-        <h3>{selectedArea}</h3>
-
-
-      </div>
-
-      */}
+      {showmodal && (
+        <div className="modal">
+          <h3>{showmodal}</h3>
+          <Plot
+            data={plotData.data}
+            layout={plotData.layout}
+            style={{ width: "100%", height: "400px" }}
+          />
+        </div>
+      )}
 
       <div className="selectors">
         <NativeSelect
@@ -194,7 +236,6 @@ const Home = () => {
           data={["okresy", "kraje", "obce"]}
           onChange={(e) => {
             setLevel(e.target.value);
-            console.log(e.target.value);
           }}
         />
       </div>
@@ -216,6 +257,10 @@ const Home = () => {
         </div>
         <div className="year">
           <h3>Vybraný rok: {year}</h3>
+        </div>
+        <div className="logo-small">
+          Vytvořili Cloudoví barbaři 2024
+          <img src="logo.png" alt="cloudovi bratri" />
         </div>
       </div>
     </>
