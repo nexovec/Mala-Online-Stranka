@@ -191,3 +191,26 @@ fieldset {
  height: 100%;
  margin-left: 1em;
 }
+
+
+.helpicon-container {
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4em;
+  height: 4em;
+  position: fixed;
+  bottom: 5em;
+  right: 1em;
+  z-index: 2 !important;
+  cursor: pointer;
+  border: 3px solid #333;
+}
+
+.helpicon-container h1 {
+  font-size: 2em;
+  font-weight: 700;
+  color: #333;
+}

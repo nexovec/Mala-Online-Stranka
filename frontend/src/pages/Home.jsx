@@ -9,6 +9,8 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import BarLoader from "react-spinners/BarLoader";
 import Plot from "react-plotly.js";
+import { useDisclosure } from '@mantine/hooks';
+import { Modal } from '@mantine/core';
 
 const Home = () => {
   const [geojsonData, setGeojsonData] = useState(null);
@@ -25,6 +27,7 @@ const Home = () => {
   const [showmodal, setShowmodal] = useState(null);
   const [detailInfo, setDetailInfo] = useState(null);
   const [metric, setMetric] = useState(70720);
+  const [opened, { open, close }] = useDisclosure(false); //modal controls
 
   // Function to handle click event on a GeoJSON featurev
 
@@ -218,13 +221,14 @@ const Home = () => {
         scrollWheelZoom={true}
         style={{ height: "100vh", width: "100%" }}
         className="map"
+        doubleClickZoom={false}
       >
         {geojsonData && (
           <GeoJSON
             data={geojsonData}
             style={geoJSONStyle}
             eventHandlers={{
-              click: onFeatureClick, // Add the click event handler
+              click: onFeatureClick,
               dblclick: onFeatureDblClick,
             }}
           />
@@ -349,6 +353,23 @@ const Home = () => {
           Vytvořili Cloudoví barbaři 2024
           <img src="logo.png" alt="cloudovi bratri" />
         </div>
+
+
+        <Modal.Root opened={opened} onClose={close}>
+        <Modal.Overlay />
+        <Modal.Content>
+          <Modal.Header>
+            <Modal.Title>Marečku podejte mi pero</Modal.Title>
+            <Modal.CloseButton />
+          </Modal.Header>
+          <Modal.Body>text text text text text text text text text text text text text text text text text text </Modal.Body>
+        </Modal.Content>
+      </Modal.Root>
+
+
+        <div className="helpicon-container" onClick={open}>
+          <h1>?</h1>
+      </div>
       </div>
     </>
   );
