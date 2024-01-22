@@ -35,7 +35,7 @@ def get_places(level: str):
             places = places.drop_duplicates()
         case _:
             raise HTTPException(
-                status_code=404,
+                status_code=500,
                 detail="Unknown level. Must be one of: okresy, obce, kraje",
             )
 
@@ -44,12 +44,12 @@ def get_places(level: str):
 
 @router.get("/getUzemiInfoById/")
 def get_places_by_id(id: int, level: str):
-    match level.lower():
+    match level.casefold().strip():
         case "okresy":
             place = places_df.loc[places_df["okres_id"] == id]
             if id == 3100:
                 return place.to_dict("records")
-            
+
             return place.to_dict("records")[0]
         case "obce":
             place = places_df.loc[places_df["obec_id"] == id]
@@ -58,11 +58,10 @@ def get_places_by_id(id: int, level: str):
             place = places_df.loc[places_df["kraj_id"] == id]
             if id == 19:
                 return place.to_dict("records")
-            
+
             return place.to_dict("records")[0]
         case _:
             raise HTTPException(
-                status_code=404,
+                status_code=500,
                 detail="Unknown level. Must be one of: okresy, obce, kraje",
             )
-        

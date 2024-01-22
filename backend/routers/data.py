@@ -24,7 +24,7 @@ def read_data(
 ):
     df = data_df.loc[(data_df["kodukaz"] == metric) & (data_df["rok"] == year)]
 
-    match level.lower():
+    match level.casefold().strip():
         case "okresy":
             merged_df = pd.merge(df, places, left_on="koduzemi", right_on="obec_id")
             merged_df = merged_df[["okres_id", "hodnota"]]
@@ -80,7 +80,7 @@ def get_plotly_graph(place: int, metric: int, level: str):
 
     df = df.loc[df["kodukaz"] == metric]
 
-    match level.lower():
+    match level.casefold().strip():
         case "kraje":
             df = pd.merge(df, places, left_on="koduzemi", right_on="obec_id")
             df = df.loc[df["kraj_id"] == place]
@@ -118,7 +118,7 @@ def get_spider(
 
     df = df.loc[df["rok"] == year]
 
-    match level.lower():
+    match level.casefold().strip():
         case "kraje":
             df = pd.merge(df, places, left_on="koduzemi", right_on="obec_id")
             df = df[["rok", "kodukaz", "kraj_id", "hodnota"]]
@@ -212,15 +212,9 @@ def get_spider(
 
     fig = px.line_polar(df, r="values", theta="krit", line_close=True, range_r=[0, 1])
     fig.update_layout(
-        polar=dict(
-            radialaxis=dict(
-                visible=True,
-                showline=False,
-                showticklabels=False
-            )
-        )
+        polar=dict(radialaxis=dict(visible=True, showline=False, showticklabels=False))
     )
-    fig.update_traces(fill='toself')
+    fig.update_traces(fill="toself")
 
     return fig.to_json()
 
@@ -239,9 +233,62 @@ def get_image(place: int):
             with tempfile.NamedTemporaryFile(delete=False, suffix=".gif") as temp_file:
                 temp_file.write(img_response.content)
 
-            return FileResponse(temp_file.name, media_type="image/gif", filename=f"flag_{place}.gif")
+            return FileResponse(
+                temp_file.name, media_type="image/gif", filename=f"flag_{place}.gif"
+            )
         else:
-            raise HTTPException(status_code=img_response.status_code, detail="Image not found")
+            raise HTTPException(
+                status_code=img_response.status_code, detail="Image not found"
+            )
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/rank")
+def rank_places(metric_id: int, place: int, level: str):
+    df = data_df[["rok", "kodukaz", "koduzemi", "hodnota"]]
+    df = df.loc[df["kodukaz"] == metric_id]
+    df = pd.merge(df, places, left_on="koduzemi", right_on="obec_id")
+    
+    metric_name, metric_desc = ukazatele.loc[ukazatele["kodukaz"] == metric_id, ["nazev", "metodika "]].values[0]
+    
+    match level.casefold().strip():
+        case "kraje":
+            df = df[['rok', "kodukaz", 'kraj_id', "koduzemi", "obec_name", 'hodnota']]
+            df = df.loc[df["kraj_id"] == place]
+        case "okresy":
+            df = df[["rok", "kodukaz", "okres_id", "koduzemi", "obec_name", "hodnota"]]
+            df = df.loc[df["okres_id"] == place]
+        case "obce":
+            df = df[["rok", "kodukaz", "koduzemi", "obec_name", "hodnota"]]
+            df = df.loc[df["koduzemi"] == place]
+    
+
+    df["rank"] = df["hodnota"].rank(method="max") 
+    df = df[["koduzemi", "obec_name", "rank", "rok", "hodnota"]]
+
+
+    # df.dropna(subset=["hodnota"], inplace=True)
+    df["hodnota"].fillna(0, inplace=True)
+    zero_hodnota_rows = df.groupby("obec_name")["hodnota"].transform("max") == 0
+
+    df = df[~zero_hodnota_rows]
+
+
+    fig = px.line(
+        df, 
+        x="rok", y="rank",
+        title=metric_name, labels={"rank": "Pořadí", "rok": "Rok"},
+        color="obec_name", hover_data=["hodnota"],
+        template="plotly_white", color_discrete_sequence=px.colors.qualitative.Pastel)
+    fig.update_traces(mode="markers+lines")
+
+    fig.update_layout(
+        xaxis=dict(showgrid=False),
+        yaxis=dict(showgrid=False),
+        legend_title_text="Název obce",
+    )
+    
+    return fig.to_json()
+    
