@@ -100,9 +100,7 @@ def get_plotly_graph(place: int, metric: int, level: str):
             )
 
     fig = px.line(
-        df,
-        x="rok",
-        y="hodnota",
+        df, x="rok", y="hodnota", color_discrete_sequence=px.colors.qualitative.Pastel
     )
 
     return fig.to_json()
@@ -210,7 +208,14 @@ def get_spider(
     )
     df.fillna(0, inplace=True)
 
-    fig = px.line_polar(df, r="values", theta="krit", line_close=True, range_r=[0, 1])
+    fig = px.line_polar(
+        df,
+        r="values",
+        theta="krit",
+        line_close=True,
+        range_r=[0, 1],
+        color_discrete_sequence=px.colors.qualitative.Pastel,
+    )
     fig.update_layout(
         polar=dict(radialaxis=dict(visible=True, showline=False, showticklabels=False))
     )
@@ -250,12 +255,14 @@ def rank_places(metric_id: int, place: int, level: str):
     df = data_df[["rok", "kodukaz", "koduzemi", "hodnota"]]
     df = df.loc[df["kodukaz"] == metric_id]
     df = pd.merge(df, places, left_on="koduzemi", right_on="obec_id")
-    
-    metric_name, metric_desc = ukazatele.loc[ukazatele["kodukaz"] == metric_id, ["nazev", "metodika "]].values[0]
-    
+
+    metric_name, metric_desc = ukazatele.loc[
+        ukazatele["kodukaz"] == metric_id, ["nazev", "metodika "]
+    ].values[0]
+
     match level.casefold().strip():
         case "kraje":
-            df = df[['rok', "kodukaz", 'kraj_id', "koduzemi", "obec_name", 'hodnota']]
+            df = df[["rok", "kodukaz", "kraj_id", "koduzemi", "obec_name", "hodnota"]]
             df = df.loc[df["kraj_id"] == place]
         case "okresy":
             df = df[["rok", "kodukaz", "okres_id", "koduzemi", "obec_name", "hodnota"]]
@@ -263,11 +270,14 @@ def rank_places(metric_id: int, place: int, level: str):
         case "obce":
             df = df[["rok", "kodukaz", "koduzemi", "obec_name", "hodnota"]]
             df = df.loc[df["koduzemi"] == place]
-    
+        case _:
+            raise HTTPException(
+                status_code=404,
+                detail="Unknown level. Must be one of: okresy, obce, kraje",
+            )
 
-    df["rank"] = df["hodnota"].rank(method="max") 
+    df["rank"] = df["hodnota"].rank(method="max")
     df = df[["koduzemi", "obec_name", "rank", "rok", "hodnota"]]
-
 
     # df.dropna(subset=["hodnota"], inplace=True)
     df["hodnota"].fillna(0, inplace=True)
@@ -275,13 +285,17 @@ def rank_places(metric_id: int, place: int, level: str):
 
     df = df[~zero_hodnota_rows]
 
-
     fig = px.line(
-        df, 
-        x="rok", y="rank",
-        title=metric_name, labels={"rank": "Pořadí", "rok": "Rok"},
-        color="obec_name", hover_data=["hodnota"],
-        template="plotly_white", color_discrete_sequence=px.colors.qualitative.Pastel)
+        df,
+        x="rok",
+        y="rank",
+        title=metric_name,
+        labels={"rank": "Pořadí", "rok": "Rok"},
+        color="obec_name",
+        hover_data=["hodnota"],
+        template="plotly_white",
+        color_discrete_sequence=px.colors.qualitative.Pastel,
+    )
     fig.update_traces(mode="markers+lines")
 
     fig.update_layout(
@@ -289,6 +303,5 @@ def rank_places(metric_id: int, place: int, level: str):
         yaxis=dict(showgrid=False),
         legend_title_text="Název obce",
     )
-    
+
     return fig.to_json()
-    
