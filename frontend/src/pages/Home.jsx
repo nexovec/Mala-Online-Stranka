@@ -29,7 +29,7 @@ const Home = () => {
   const [metric, setMetric] = useState(70720);
   const [opened, { open, close }] = useDisclosure(false); //modal controls
 
-  // Function to handle click event on a GeoJSON featurev
+  // Function to handle click event on a GeoJSON featurev 
 
   const closeModal = () => {
     setShowmodal(null);
@@ -38,7 +38,7 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/ciselnik/metrics");
+        const response = await fetch(`http://localhost:5000/ciselnik/metrics`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -56,7 +56,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/ciselnik/places/${level}`
+          `${process.env.REACT_APP_URL}/ciselnik/places/${level}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -79,7 +79,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/ciselnik/getUzemiInfoById?id=${obec}&level=${level}`
+          `${process.env.REACT_APP_URL}/ciselnik/getUzemiInfoById?id=${obec}&level=${level}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -103,7 +103,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/data/spider?place=${obec}&year=${year}&level=${level}`
+          `${process.env.REACT_APP_URL}/data/spider?place=${obec}&year=${year}&level=${level}`
         );
         const data = await response.json();
         const data2 = JSON.parse(data);
@@ -125,7 +125,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/data/plotlygraph?place=${obec}&metric=${metric}&level=${level}`
+          `${process.env.REACT_APP_URL}/data/plotlygraph?place=${obec}&metric=${metric}&level=${level}`
         );
         const data = await response.json();
         const data2 = JSON.parse(data);
