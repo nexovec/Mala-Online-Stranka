@@ -3,6 +3,7 @@ FROM node:21 AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN yarn install
+RUN npm install
 
 COPY . .
 RUN npm run build
