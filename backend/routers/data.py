@@ -6,6 +6,7 @@ import plotly.express as px
 import polars as pl
 import requests
 import tempfile
+import math
 
 router = APIRouter(prefix="/data", tags=["Data"])
 
@@ -106,120 +107,84 @@ def get_plotly_graph(place: int, metric: int, level: str):
     return fig.to_json()
 
 
+def norm_ukazatel(df, place, ukazatele, pocet_obyvatel):
+    data_df = df.loc[df["kodukaz"].isin(ukazatele)]
+    data_df = data_df.groupby(["uzemi_id", "kodukaz"]).sum().reset_index()
+    data_df["hodnota"] = data_df["hodnota"].apply(lambda x: math.log(x) if x != 0 else 0)
+    data_df["hodnota"] = data_df["hodnota"] / pocet_obyvatel.loc[pocet_obyvatel["uzemi_id"] == place, "hodnota"].sum()
+    data_df = data_df.groupby("uzemi_id").sum().reset_index()
+    data_df["skore"] = data_df["hodnota"] / data_df["hodnota"].max()
+    
+    return data_df
+
+
 @router.get("/spider")
 def get_spider(
     place: int,
     level: str,
     year: int,
 ):
-    df = data_df[["rok", "kodukaz", "koduzemi", "hodnota"]]
+    df = df[["rok", "kodukaz", "koduzemi", "hodnota", "okruh"]]
+    df = df.loc[df["okruh"].isin([4, 7, 15, 20])]
 
-    df = df.loc[df["rok"] == year]
-
-    match level.casefold().strip():
+    match level.lower():
         case "kraje":
             df = pd.merge(df, places, left_on="koduzemi", right_on="obec_id")
-            df = df[["rok", "kodukaz", "kraj_id", "hodnota"]]
-            df = df.groupby(["rok", "kodukaz", "kraj_id"]).sum().reset_index()
-            id_name = "kraj_id"
+            df = df[['rok', 'kodukaz', 'kraj_id', 'hodnota']]
+            df.rename(columns={"kraj_id": "uzemi_id"}, inplace=True)
+            df = df.groupby(["rok", "kodukaz", "uzemi_id"]).sum().reset_index()
+            pocet_obyvatel["uzemi_id"] = pocet_obyvatel["kraj_id"]
         case "okresy":
             df = pd.merge(df, places, left_on="koduzemi", right_on="obec_id")
-            df = df[["rok", "kodukaz", "okres_id", "hodnota"]]
-            df = df.groupby(["rok", "kodukaz", "okres_id"]).sum().reset_index()
-            id_name = "okres_id"
+            df = df[["kodukaz", "okres_id", "hodnota"]]
+            df.rename(columns={"okres_id": "uzemi_id"}, inplace=True)
+            df = df.groupby(["kodukaz", "uzemi_id"]).sum().reset_index()
+            pocet_obyvatel["uzemi_id"] = pocet_obyvatel["okres_id"]
         case "obce":
             df = df[["rok", "kodukaz", "koduzemi", "hodnota"]]
-            id_name = "koduzemi"
+            df.rename(columns={"koduzemi": "uzemi_id"})
+            pocet_obyvatel["uzemi_id"] = pocet_obyvatel["obec_id"]
 
-    vol_cas = [141434, 141432, 600808, 600806]
-    vol_casdf = df.loc[df["kodukaz"].isin(vol_cas)]
-    vol_score = vol_casdf.loc[vol_casdf[id_name] == place, "hodnota"].sum()
-    vol_score = vol_score / vol_casdf["hodnota"].max()
-    vol_score = (
-        vol_score
-        / pocet_obyvatel.loc[pocet_obyvatel[id_name] == place, "hodnota"].values[0]
-    )
-    # 141434 - kulturni a osvetova plocha
-    # 141432 - sportoviste a rekrea. plocha
-    # 600808 - hriste
-    # 600806 - koupaliste
 
-    priroda = [141000, 141431, 141432]
-    priroda_df = df.loc[df["kodukaz"].isin(priroda)]
-    prir_score = priroda_df.loc[priroda_df[id_name] == place, "hodnota"].sum()
-    prir_score = prir_score / priroda_df["hodnota"].max()
-    prir_score = (
-        prir_score
-        / pocet_obyvatel.loc[pocet_obyvatel[id_name] == place, "hodnota"].values[0]
-    )
-    # lesní půda
-    # zeleň
+    zdravotnictvi = ukazatele.loc[ukazatele["okruh"] == 7, "kodukaz"]
+    skolstvi = ukazatele.loc[ukazatele["okruh"] == 4, "kodukaz"]
+    soc_sluzby = ukazatele.loc[ukazatele["okruh"] == 15, "kodukaz"]
+    hospodareni = [200802]
 
-    vzdelani = [40300, 40590]
-    vzdelani_df = df.loc[df["kodukaz"].isin(vzdelani)]
-    vzdelani_score = vzdelani_df.loc[vzdelani_df[id_name] == place, "hodnota"].sum()
-    vzdelani_score = vzdelani_score / vzdelani_df["hodnota"].max()
-    vzdelani_score = (
-        vzdelani_score
-        / pocet_obyvatel.loc[pocet_obyvatel[id_name] == place, "hodnota"].values[0]
-    )
-    # materske skoly
-    # zakladni skoly
+    zdravotnictvi_df = norm_ukazatel(df, place, zdravotnictvi, pocet_obyvatel)
+    skolstvi_df = norm_ukazatel(df, place, skolstvi, pocet_obyvatel)
+    soc_sluzby_df = norm_ukazatel(df, place, soc_sluzby, pocet_obyvatel)
+    hospodareni_df = norm_ukazatel(df, place, hospodareni, pocet_obyvatel)
 
-    bydleni = [402120, 250260, 410713, 420713, 250230, 410701, 420701]
-    bydleni_df = df.loc[df["kodukaz"].isin(bydleni)]
-    bydleni_score = bydleni_df.loc[bydleni_df[id_name] == place, "hodnota"].sum()
-    bydleni_score = bydleni_score / bydleni_df["hodnota"].max()
-    bydleni_score = (
-        bydleni_score
-        / pocet_obyvatel.loc[pocet_obyvatel[id_name] == place, "hodnota"].values[0]
-    )
-    # byty
+    zdravotnictvi_score = zdravotnictvi_df.loc[zdravotnictvi_df["uzemi_id"] == place, "skore"].values[0]
+    skolstvi_score = skolstvi_df.loc[skolstvi_df["uzemi_id"] == place, "skore"].values[0]
+    soc_sluzby_score = soc_sluzby_df.loc[soc_sluzby_df["uzemi_id"] == place, "skore"].values[0]
+    hospodareni_score = hospodareni_df.loc[hospodareni_df["uzemi_id"] == place, "skore"].values[0]
 
-    zdravotnictvi = [70300, 71000, 70200, 70720, 70730]
-    zdravotnictvi_df = df.loc[df["kodukaz"].isin(zdravotnictvi)]
-    zdravotnictvi_score = zdravotnictvi_df.loc[
-        zdravotnictvi_df[id_name] == place, "hodnota"
-    ].sum()
-    zdravotnictvi_score = zdravotnictvi_score / zdravotnictvi_df["hodnota"].max()
-    zdravotnictvi_score = (
-        zdravotnictvi_score
-        / pocet_obyvatel.loc[pocet_obyvatel[id_name] == place, "hodnota"].values[0]
-    )
-    # nemocnice
-    # lékarny
-    # zdravotni strediska
-
-    df = pd.DataFrame(
-        {
-            "krit": ["Zdravotnictví", "Bydlení", "Příroda", "Vzdělání", "Volný čas"],
-            "values": [
-                zdravotnictvi_score,
-                bydleni_score,
-                prir_score,
-                vzdelani_score,
-                vol_score,
-            ],
-        }
+    score_df = pd.DataFrame({
+        "krit": ["Zdravotnictví", "Školství", "Sociální služby", "Hospodaření"],
+        "values": [
+            zdravotnictvi_score,
+            skolstvi_score,
+            soc_sluzby_score,
+            hospodareni_score
+        ]
+    }
     )
 
-    df["values"] = (df["values"] - df["values"].min()) / (
-        df["values"].max() - df["values"].min()
-    )
-    df.fillna(0, inplace=True)
 
-    fig = px.line_polar(
-        df,
-        r="values",
-        theta="krit",
-        line_close=True,
-        range_r=[0, 1],
-        color_discrete_sequence=px.colors.qualitative.Pastel,
-    )
+    fig = px.line_polar(score_df, r="values", theta="krit", line_close=True, range_r=[0, 1], color_discrete_sequence=px.colors.qualitative.Pastel)
     fig.update_layout(
-        polar=dict(radialaxis=dict(visible=True, showline=False, showticklabels=False))
+        polar=dict(
+            radialaxis=dict(
+                visible=True,
+                showline=False,
+                showticklabels=False,
+                linecolor="black",
+            )
+        )
     )
-    fig.update_traces(fill="toself")
+    fig.update_traces(fill='toself')
 
     return fig.to_json()
 
