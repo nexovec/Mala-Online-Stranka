@@ -7,62 +7,24 @@ body {
 }
 
 .selectors {
-    position: absolute;
-    top: 5em;
-    left: 0.6em;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: fle;
-    width: 20em;
-    height: auto;
-    background-color: rgba(255, 255, 255, 1);
-    padding: 1em;
-    border-radius: 20px;
+  position: absolute;
+  top: 5em;
+  left: 0.6em;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: fle;
+  width: 20em;
+  height: auto;
+  background-color: rgba(255, 255, 255, 1);
+  padding: 1em;
+  border-radius: 20px;
+  cursor: grab;
 }
 
 .selectors div {
   margin: 0 !important;
-}
-
-.timeline {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-  z-index: 2;
-  /*background: linear-gradient(to bottom, #ffffff, #58b7e3b4);  */
-  background-color: #ffff;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  border-radius: 20px 20px 0 0;
-}
-
-
-.timeline > span {
-    height: 10px;
-}
-
-.timeline > span:nth-child(2) {
-    height: 1em;
-}
-
-.slider {
-  width: 100%;
-  margin: 1em;
-}
-
-.slider-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    margin-left: 2em;
 }
 
 .css-14pt78w-MuiSlider-rail {
@@ -123,15 +85,6 @@ fieldset {
   font-size: 1.5em;
 }
 
-.year {
- margin-left: 1em;
- display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -143,28 +96,15 @@ fieldset {
   gap: 1em;
 }
 
-.loading-container img{
+.loading-container img {
   width: 30%;
-
 }
 
-.logo-small img {
-  width: 100px;
-}
-
-.logo-small {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  height: 100%;
-  width: 50%;
-}
-
-.modal h3, .modal h4 {
+.modal h3,
+.modal h4 {
   color: #333; /* Dark grey color for text */
   margin: 10px 0;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   padding-left: 12px;
 }
 
@@ -185,13 +125,11 @@ fieldset {
   overflow: hidden; /* Ensures plot stays within the container */
 }
 
-
 .flag {
   width: 20%;
- height: 100%;
- margin-left: 1em;
+  height: 100%;
+  margin-left: 1em;
 }
-
 
 .helpicon-container {
   background-color: #ffffff;
@@ -213,4 +151,124 @@ fieldset {
   font-size: 2em;
   font-weight: 700;
   color: #333;
+}
+
+.timeline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  z-index: 2;
+  /*background: linear-gradient(to bottom, #ffffff, #58b7e3b4);  */
+  background-color: #ffff;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 20px 20px 0 0;
+}
+
+.timeline > span {
+  height: 10px;
+}
+
+.timeline > span:nth-child(2) {
+  height: 1em;
+}
+
+.slider {
+  width: 100%;
+  margin: 1em;
+}
+
+.logo-small img {
+  width: 100px;
+}
+
+.logo-small {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+  width: 30%;
+}
+
+.slider-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 50%;
+  margin-left: 2em;
+}
+
+.selector-timeline {
+  width: 70%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1em;
+  margin-right: 2em;
+}
+
+.selector-timeline div {
+  margin: 0 !important;
+}
+
+.year {
+  margin-left: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 30%;
+}
+
+.timeline-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+  gap: 2em;
+}
+
+.burger {
+  display: none;
+}
+
+@media only screen and (max-width: 1200px) {
+
+  .search {
+    right: 2.5%;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 1em;
+  }
+
+  .burger {
+    display: block;
+  }
+
+  .search-bar {
+    width: 90%;
+  }
+
+  a {
+    display: none !important;;
+  }
+
+  .selectors {
+    left: 2.5%;
+    width: 95%;
+    height: auto;
+    cursor: auto;
+  }
+
 }

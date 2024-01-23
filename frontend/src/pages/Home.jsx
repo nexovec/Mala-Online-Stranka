@@ -9,8 +9,11 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import BarLoader from "react-spinners/BarLoader";
 import Plot from "react-plotly.js";
-import { useDisclosure } from '@mantine/hooks';
-import { Modal } from '@mantine/core';
+import { useDisclosure } from "@mantine/hooks";
+import { Modal } from "@mantine/core";
+import { useRef } from "react";
+import { motion } from "framer-motion";
+import { Burger } from "@mantine/core";
 
 const Home = () => {
   const [geojsonData, setGeojsonData] = useState(null);
@@ -28,8 +31,22 @@ const Home = () => {
   const [detailInfo, setDetailInfo] = useState(null);
   const [metric, setMetric] = useState(70720);
   const [opened, { open, close }] = useDisclosure(false); //modal controls
+  const [mobile, setMobile] = useState(false);
+  const [openedburger, { toggle }] = useDisclosure();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMobile(window.innerWidth > 1000);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Function to handle click event on a GeoJSON featurev
+
+  const constraintsRef = useRef(null);
 
   const closeModal = () => {
     setShowmodal(null);
@@ -214,7 +231,7 @@ const Home = () => {
   console.log(selectedFeatureId);
 
   return (
-    <>
+    <div ref={constraintsRef}>
       <MapContainer
         center={[49.5214, 15.3547]}
         zoom={8}
@@ -264,6 +281,12 @@ const Home = () => {
           }}
           getOptionSelected={(option, value) => option.id === value.id}
         />
+        <Burger
+          opened={openedburger}
+          onClick={toggle}
+          aria-label="Toggle navigation"
+          className="burger"
+        />
       </div>
 
       {showmodal && detailInfo && (
@@ -308,28 +331,25 @@ const Home = () => {
         </div>
       )}
 
-      <div className="selectors">
-        <NativeSelect
-          mt="md"
-          label="Výběr ukazatele"
-          data={data.map((item) => ({
-            value: item.id, // Assuming each item has an 'id' field
-            label: item.nazev,
-          }))}
-          value={metric}
-          onChange={(e) => setMetric(e.target.value)}
-        />
-
-        <NativeSelect
-          mt="md"
-          label="Výběr ukazatele"
-          value={level}
-          data={["okresy", "kraje", "obce"]}
-          onChange={(e) => {
-            setLevel(e.target.value);
-          }}
-        />
-      </div>
+      {openedburger ||
+        (!mobile && (
+          <motion.div
+            drag={mobile ? true : false}
+            className="selectors"
+            dragConstraints={constraintsRef}
+          >
+            <NativeSelect
+              mt="md"
+              label="Výběr ukazatele"
+              data={data.map((item) => ({
+                value: item.id, // Assuming each item has an 'id' field
+                label: item.nazev,
+              }))}
+              value={metric}
+              onChange={(e) => setMetric(e.target.value)}
+            />
+          </motion.div>
+        ))}
 
       <div className="timeline">
         <div className="slider-container">
@@ -346,32 +366,49 @@ const Home = () => {
           />
           <h3>2020</h3>
         </div>
-        <div className="year">
-          <h3>Vybraný rok: {year}</h3>
+        <div className="timeline-container">
+          <div className="year">
+            <h3>Vybraný rok: {year}</h3>
+          </div>
+          <div className="selector-timeline">
+            <h3>Vyberte uzemní jednotku:</h3>
+            <NativeSelect
+              mt="md"
+              //label="Výběr územní jednotky"
+              value={level}
+              data={["Okresy", "Kraje", "Obce"]}
+              onChange={(e) => {
+                setLevel(e.target.value);
+              }}
+            />
+          </div>
+          {/* 
+          <div className="logo-small">
+            Vytvořili Cloudoví barbaři 2024
+            <img src="logo.png" alt="cloudovi bratri" />
+          </div>
+          */}
         </div>
-        <div className="logo-small">
-          Vytvořili Cloudoví barbaři 2024
-          <img src="logo.png" alt="cloudovi bratri" />
-        </div>
-
 
         <Modal.Root opened={opened} onClose={close}>
-        <Modal.Overlay />
-        <Modal.Content>
-          <Modal.Header>
-            <Modal.Title>Marečku podejte mi pero</Modal.Title>
-            <Modal.CloseButton />
-          </Modal.Header>
-          <Modal.Body>text text text text text text text text text text text text text text text text text text </Modal.Body>
-        </Modal.Content>
-      </Modal.Root>
-
+          <Modal.Overlay />
+          <Modal.Content>
+            <Modal.Header>
+              <Modal.Title>Marečku podejte mi pero</Modal.Title>
+              <Modal.CloseButton />
+            </Modal.Header>
+            <Modal.Body>
+              text text text text text text text text text text text text text
+              text text text text text{" "}
+            </Modal.Body>
+          </Modal.Content>
+        </Modal.Root>
 
         <div className="helpicon-container" onClick={open}>
           <h1>?</h1>
+        </div>
       </div>
-      </div>
-    </>
+    </div>
   );
 };
 
