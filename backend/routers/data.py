@@ -11,7 +11,7 @@ router = APIRouter(prefix="/data", tags=["Data"])
 
 data_df = pd.read_parquet("data/data.parquet").dropna(axis=1, how="all")
 pocet_obyvatel = pd.read_csv("data/pocet_obyvatel.csv")
-ukazatele = pl.read_csv("data/cis_ukazatelu.csv")
+ukazatele = pd.read_csv("data/cis_ukazatelu.csv")
 uzemi = pl.read_csv("data/cis_uzemi.csv")
 places = pd.read_csv("data/places.csv")
 
@@ -255,14 +255,15 @@ def rank_places(metric_id: int, place: int, level: str):
     df = data_df[["rok", "kodukaz", "koduzemi", "hodnota"]]
     df = df.loc[df["kodukaz"] == metric_id]
     df = pd.merge(df, places, left_on="koduzemi", right_on="obec_id")
-
-    metric_name, metric_desc = ukazatele.loc[
-        ukazatele["kodukaz"] == metric_id, ["nazev", "metodika "]
-    ].values[0]
-
+    
+    poc_ob = pocet_obyvatel[["koduzemi", "hodnota"]]
+    poc_ob.columns = ["koduzemi", "pocet_obyvatel"]
+    
+    metric_name, metric_desc = ukazatele.loc[ukazatele["kodukaz"] == metric_id, ["nazev", "metodika "]].values[0]
+    
     match level.casefold().strip():
         case "kraje":
-            df = df[["rok", "kodukaz", "kraj_id", "koduzemi", "obec_name", "hodnota"]]
+            df = df[['rok', "kodukaz", 'kraj_id', "koduzemi", "obec_name", 'hodnota']]
             df = df.loc[df["kraj_id"] == place]
         case "okresy":
             df = df[["rok", "kodukaz", "okres_id", "koduzemi", "obec_name", "hodnota"]]
@@ -270,38 +271,34 @@ def rank_places(metric_id: int, place: int, level: str):
         case "obce":
             df = df[["rok", "kodukaz", "koduzemi", "obec_name", "hodnota"]]
             df = df.loc[df["koduzemi"] == place]
-        case _:
-            raise HTTPException(
-                status_code=404,
-                detail="Unknown level. Must be one of: okresy, obce, kraje",
-            )
-
-    df["rank"] = df["hodnota"].rank(method="max")
+    
+    # divide by number of inhabitants
+    df = pd.merge(df, poc_ob, on="koduzemi")
+    df["rank_hodnota"] = df["hodnota"] / df["pocet_obyvatel"]
+    
+    df["rank"] = df.groupby("rok")["rank_hodnota"].rank(ascending=False, method="min")
     df = df[["koduzemi", "obec_name", "rank", "rok", "hodnota"]]
+
 
     # df.dropna(subset=["hodnota"], inplace=True)
     df["hodnota"].fillna(0, inplace=True)
-    zero_hodnota_rows = df.groupby("obec_name")["hodnota"].transform("max") == 0
 
+    zero_hodnota_rows = df.groupby("obec_name")["hodnota"].transform("max") == 0
     df = df[~zero_hodnota_rows]
+
 
     fig = px.line(
         df,
-        x="rok",
-        y="rank",
-        title=metric_name,
-        labels={"rank": "Pořadí", "rok": "Rok"},
-        color="obec_name",
-        hover_data=["hodnota"],
-        template="plotly_white",
-        color_discrete_sequence=px.colors.qualitative.Pastel,
-    )
+        x="rok", y="rank",
+        title=metric_name, labels={"rank": "Pořadí", "rok": "Rok"},
+        color="obec_name", hover_data=["hodnota"],
+        template="plotly_white", color_discrete_sequence=px.colors.qualitative.Pastel)
     fig.update_traces(mode="markers+lines")
-
     fig.update_layout(
         xaxis=dict(showgrid=False),
-        yaxis=dict(showgrid=False),
+        yaxis=dict(showgrid=False,autorange="reversed", range=[1, df["rank"].max() + 1]),
         legend_title_text="Název obce",
     )
+    fig.update_yaxes(dict(showticklabels=False))
 
     return fig.to_json()
