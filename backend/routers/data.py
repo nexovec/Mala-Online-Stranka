@@ -124,7 +124,7 @@ def get_spider(
     level: str,
     year: int,
 ):
-    df = df[["rok", "kodukaz", "koduzemi", "hodnota", "okruh"]]
+    df = data_df[["rok", "kodukaz", "koduzemi", "hodnota", "okruh"]]
     df = df.loc[df["okruh"].isin([4, 7, 15, 20])]
 
     match level.lower():
