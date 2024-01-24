@@ -14,6 +14,7 @@ import { Modal } from "@mantine/core";
 import { useRef } from "react";
 import { motion } from "framer-motion";
 import { Burger } from "@mantine/core";
+import defaultExport from "../config";
 
 const Home = () => {
   const [geojsonData, setGeojsonData] = useState(null);
@@ -55,7 +56,8 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${process.env.BACKEND_URL}/ciselnik/metrics`);
+        console.log(process.env)
+        const response = await fetch(`${defaultExport.BACKEND_URL}/ciselnik/metrics`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -73,7 +75,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${process.env.BACKEND_URL}/ciselnik/places/${level}`
+          `${defaultExport.BACKEND_URL}/ciselnik/places/${level}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -96,7 +98,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${process.env.BACKEND_URL}/ciselnik/getUzemiInfoById?id=${obec}&level=${level}`
+          `${defaultExport.BACKEND_URL}/ciselnik/getUzemiInfoById?id=${obec}&level=${level}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -120,7 +122,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${process.env.BACKEND_URL}/data/spider?place=${obec}&year=${year}&level=${level}`
+          `${defaultExport.BACKEND_URL}/data/spider?place=${obec}&year=${year}&level=${level}`
         );
         const data = await response.json();
         const data2 = JSON.parse(data);
@@ -142,7 +144,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${process.env.BACKEND_URL}/data/plotlygraph?place=${obec}&metric=${metric}&level=${level}`
+          `${defaultExport.BACKEND_URL}/data/plotlygraph?place=${obec}&metric=${metric}&level=${level}`
         );
         const data = await response.json();
         const data2 = JSON.parse(data);
@@ -311,7 +313,7 @@ const Home = () => {
 
           {level === "obce" && (
           <img
-            src={`${process.env.BACKEND_URL}/data/flag?place=${selectedFeatureId.slice(6)}`}
+            src={`${defaultExport.BACKEND_URL}/data/flag?place=${selectedFeatureId.slice(6)}`}
             alt="Flag"
             className="flag"
           />
