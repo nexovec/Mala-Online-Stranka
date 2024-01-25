@@ -193,7 +193,7 @@ const Home = () => {
     setLoading(true);
     setSelectedFeatureId(null);
     setGeojsonData(null);
-    fetch(`${level}.json`)
+    fetch(`${level.toLowerCase}.json`)
       .then((response) => response.json())
       .then((data) => {
         setGeojsonData(data);
