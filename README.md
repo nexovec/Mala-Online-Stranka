@@ -1,8 +1,8 @@
 # Malá Online stránka
 
-**Název aplikace:** M.O.S. - *Malá online stránka*
-**Datové zdroje:**
-    - [ČSÚ](https://www.czso.cz/csu/czso/databaze-mos-otevrena-data)
+- **Název aplikace:** M.O.S. - *Malá online stránka*
+- **Datové zdroje:**
+    - [ČSÚ - Databáze MOS (městské a obecní statistiky)](https://www.czso.cz/csu/czso/databaze-mos-otevrena-data)
 
 ## Jak spustit
 
