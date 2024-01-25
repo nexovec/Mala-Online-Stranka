@@ -22,7 +22,7 @@ const Home = () => {
   const [searchChoice, setSearchChoice] = useState([]);
   //const [search, setSearch] = useState([]);
   const [year, setYear] = useState(2020);
-  const [level, setLevel] = useState("Okresy");
+  const [level, setLevel] = useState("okresy");
   const [loading, setLoading] = useState(false);
   //const [selectedArea, setSelectedArea] = useState(); //uchovává vybrané uzemí
   const [selectedFeatureId, setSelectedFeatureId] = useState(null);
@@ -97,7 +97,7 @@ const Home = () => {
 
   useEffect(() => {
     let obec = selectedFeatureId;
-    if (level === "Obce" && obec != null) {
+    if (level === "obce" && obec != null) {
       obec = selectedFeatureId.slice(6);
     }
     const fetchData = async () => {
@@ -120,7 +120,7 @@ const Home = () => {
 
   useEffect(() => {
     let obec = selectedFeatureId;
-    if (level === "Obce" && obec != null) {
+    if (level === "obce" && obec != null) {
       obec = selectedFeatureId.slice(6);
     }
 
@@ -143,7 +143,7 @@ const Home = () => {
 
   useEffect(() => {
     let obec = selectedFeatureId;
-    if (level === "Obce" && obec != null) {
+    if (level === "obce" && obec != null) {
       obec = selectedFeatureId.slice(6);
     }
     setRank(null);
@@ -168,7 +168,7 @@ const Home = () => {
 
   useEffect(() => {
     let obec = selectedFeatureId;
-    if (level === "Obce" && obec != null) {
+    if (level === "obce" && obec != null) {
       obec = selectedFeatureId.slice(6);
     }
 
@@ -223,7 +223,7 @@ const Home = () => {
   }
 
   const onFeatureClick = (e) => {
-    if (level === "Obce") {
+    if (level === "obce") {
       const featureId = e.layer.feature.id;
       setSelectedFeatureId(featureId);
     } else {
@@ -234,7 +234,7 @@ const Home = () => {
   };
 
   const onFeatureDblClick = (e) => {
-    if (level === "Obce") {
+    if (level === "obce") {
       setShowmodal(e.layer.feature.id.slice(6));
     } else {
       setShowmodal(e.layer.feature.nationalCode);
@@ -243,7 +243,7 @@ const Home = () => {
 
   const geoJSONStyle = (feature) => {
     let id = feature.nationalCode;
-    if (level === "Obce") {
+    if (level === "obce") {
       id = feature.id;
     }
     if (id === selectedFeatureId) {
@@ -329,24 +329,24 @@ const Home = () => {
       {showmodal && detailInfo && (
         <div className="modal">
           <button onClick={closeModal}>X</button>
-          {level === "Obce" ? (
+          {level === "obce" ? (
             <>
               <h3>{detailInfo.obec_name}</h3>
               <h4>{detailInfo.kraj_name}</h4>
               <h4>Okres: {detailInfo.okres_name}</h4>
             </>
-          ) : level === "Kraje" ? (
+          ) : level === "kraje" ? (
             <div>
               <h3>{detailInfo.kraj_name}</h3>
             </div>
-          ) : level === "Okresy" ? (
+          ) : level === "okresy" ? (
             <div>
               <h3>{detailInfo.okres_name}</h3>
               <h4>{detailInfo.kraj_name}</h4>
             </div>
           ) : null}
 
-          {level === "Obce" && selectedFeatureId != null && (
+          {level === "obce" && selectedFeatureId != null && (
             <img
               src={`${defaultExport.BACKEND_URL}/data/flag?place=${selectedFeatureId.slice(
                 6
@@ -394,7 +394,7 @@ const Home = () => {
             onChange={(e) => setMetric(e.target.value)}
           />
           
-          {level !== "Obce" && selectedFeatureId && rank && wideClass && (
+          {level !== "obce" && selectedFeatureId && rank && wideClass && (
             <Plot
               data={rank.data}
               layout={rank.layout}
@@ -439,7 +439,7 @@ const Home = () => {
               value={level}
               data={["Okresy", "Kraje", "Obce"]}
               onChange={(e) => {
-                setLevel(e.target.value);
+                setLevel(e.target.value.toLowerCase());
               }}
             />
           </div>
