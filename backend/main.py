@@ -18,7 +18,7 @@ app = FastAPI(
     title="HackujStat V5",
     docs_url="/docs",
     redoc_url=None,
-    lifespan=lifespan,
+    # lifespan=lifespan,
 )
 
 
