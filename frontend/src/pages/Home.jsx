@@ -11,8 +11,8 @@ import BarLoader from "react-spinners/BarLoader";
 import Plot from "react-plotly.js";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal } from "@mantine/core";
-import { useRef } from "react";
-import { motion } from "framer-motion";
+//import { useRef } from "react";
+//import { motion } from "framer-motion";
 import { Burger } from "@mantine/core";
 import defaultExport from "../config";
 
@@ -22,7 +22,7 @@ const Home = () => {
   const [searchChoice, setSearchChoice] = useState([]);
   //const [search, setSearch] = useState([]);
   const [year, setYear] = useState(2020);
-  const [level, setLevel] = useState("okresy");
+  const [level, setLevel] = useState("Okresy");
   const [loading, setLoading] = useState(false);
   //const [selectedArea, setSelectedArea] = useState(); //uchovává vybrané uzemí
   const [selectedFeatureId, setSelectedFeatureId] = useState(null);
@@ -32,12 +32,18 @@ const Home = () => {
   const [detailInfo, setDetailInfo] = useState(null);
   const [metric, setMetric] = useState(70720);
   const [opened, { open, close }] = useDisclosure(false); //modal controls
-  const [mobile, setMobile] = useState(false);
   const [openedburger, { toggle }] = useDisclosure();
+  const [mobile, setMobile] = useState(window.innerWidth < 1000);
+  const [rank, setRank] = useState(null);
+  const [wideClass, setWideClass] = useState(false);
+
+  const toggleWideClass = () => {
+    setWideClass(!wideClass);
+  };
 
   useEffect(() => {
     const handleResize = () => {
-      setMobile(window.innerWidth > 1000);
+      setMobile(window.innerWidth < 1000);
     };
 
     window.addEventListener("resize", handleResize);
@@ -47,7 +53,7 @@ const Home = () => {
 
   // Function to handle click event on a GeoJSON featurev
 
-  const constraintsRef = useRef(null);
+  //const constraintsRef = useRef(null);
 
   const closeModal = () => {
     setShowmodal(null);
@@ -56,7 +62,6 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log(process.env)
         const response = await fetch(`${defaultExport.BACKEND_URL}/ciselnik/metrics`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -92,7 +97,7 @@ const Home = () => {
 
   useEffect(() => {
     let obec = selectedFeatureId;
-    if (level === "obce") {
+    if (level === "Obce" && obec != null) {
       obec = selectedFeatureId.slice(6);
     }
     const fetchData = async () => {
@@ -115,7 +120,7 @@ const Home = () => {
 
   useEffect(() => {
     let obec = selectedFeatureId;
-    if (level === "obce") {
+    if (level === "Obce" && obec != null) {
       obec = selectedFeatureId.slice(6);
     }
 
@@ -137,7 +142,31 @@ const Home = () => {
 
   useEffect(() => {
     let obec = selectedFeatureId;
-    if (level === "obce") {
+    if (level === "Obce" && obec != null) {
+      obec = selectedFeatureId.slice(6);
+    }
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${defaultExport.BACKEND_URL}/data/rank?metric_id=${metric}&place=${obec}&level=${level}`
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        const data2 = JSON.parse(data);
+        setRank(data2);
+      } catch (error) {
+        console.error("Chyba při načítání dat:", error);
+      }
+    };
+
+    fetchData();
+  }, [level, selectedFeatureId, metric, wideClass]);
+
+  useEffect(() => {
+    let obec = selectedFeatureId;
+    if (level === "Obce" && obec != null) {
       obec = selectedFeatureId.slice(6);
     }
 
@@ -155,10 +184,11 @@ const Home = () => {
     };
 
     fetchData();
-  }, [year, selectedFeatureId, level, metric]);
+  }, [year, selectedFeatureId, level, metric, wideClass]);
 
   useEffect(() => {
     setLoading(true);
+    setSelectedFeatureId(null);
     setGeojsonData(null);
     fetch(`${level}.json`)
       .then((response) => response.json())
@@ -190,7 +220,7 @@ const Home = () => {
   }
 
   const onFeatureClick = (e) => {
-    if (level === "obce") {
+    if (level === "Obce") {
       const featureId = e.layer.feature.id;
       setSelectedFeatureId(featureId);
     } else {
@@ -201,7 +231,7 @@ const Home = () => {
   };
 
   const onFeatureDblClick = (e) => {
-    if (level === "obce") {
+    if (level === "Obce") {
       setShowmodal(e.layer.feature.id.slice(6));
     } else {
       setShowmodal(e.layer.feature.nationalCode);
@@ -210,7 +240,7 @@ const Home = () => {
 
   const geoJSONStyle = (feature) => {
     let id = feature.nationalCode;
-    if (level === "obce") {
+    if (level === "Obce") {
       id = feature.id;
     }
     if (id === selectedFeatureId) {
@@ -233,7 +263,9 @@ const Home = () => {
   console.log(selectedFeatureId);
 
   return (
-    <div ref={constraintsRef}>
+    <div
+    //ref={constraintsRef}
+    >
       <MapContainer
         center={[49.5214, 15.3547]}
         zoom={8}
@@ -294,29 +326,31 @@ const Home = () => {
       {showmodal && detailInfo && (
         <div className="modal">
           <button onClick={closeModal}>X</button>
-          {level === "obce" ? (
+          {level === "Obce" ? (
             <>
               <h3>{detailInfo.obec_name}</h3>
               <h4>{detailInfo.kraj_name}</h4>
               <h4>Okres: {detailInfo.okres_name}</h4>
             </>
-          ) : level === "kraje" ? (
+          ) : level === "Kraje" ? (
             <div>
               <h3>{detailInfo.kraj_name}</h3>
             </div>
-          ) : level === "okresy" ? (
+          ) : level === "Okresy" ? (
             <div>
               <h3>{detailInfo.okres_name}</h3>
               <h4>{detailInfo.kraj_name}</h4>
             </div>
           ) : null}
 
-          {level === "obce" && (
-          <img
-            src={`${defaultExport.BACKEND_URL}/data/flag?place=${selectedFeatureId.slice(6)}`}
-            alt="Flag"
-            className="flag"
-          />
+          {level === "Obce" && selectedFeatureId != null && (
+            <img
+              src={`${defaultExport.BACKEND_URL}/data/flag?place=${selectedFeatureId.slice(
+                6
+              )}`}
+              alt="Flag"
+              className="flag"
+            />
           )}
 
           <Plot
@@ -324,34 +358,55 @@ const Home = () => {
             layout={plotData.layout}
             style={{ width: "100%", height: "400px" }}
           />
+        </div>
+      )}
 
-          <Plot
-            data={plotData2.data}
-            layout={plotData2.layout}
-            style={{ width: "100%", height: "200px" }}
+      {openedburger && mobile && (
+        <div className="selectors">
+          <NativeSelect
+            mt="md"
+            label="Výběr ukazatele"
+            data={data.map((item) => ({
+              value: item.id,
+              label: item.nazev,
+            }))}
+            value={metric}
+            onChange={(e) => setMetric(e.target.value)}
           />
         </div>
       )}
 
-      {openedburger ||
-        (!mobile && (
-          <motion.div
-            drag={mobile ? true : false}
-            className="selectors"
-            dragConstraints={constraintsRef}
-          >
-            <NativeSelect
-              mt="md"
-              label="Výběr ukazatele"
-              data={data.map((item) => ({
-                value: item.id, // Assuming each item has an 'id' field
-                label: item.nazev,
-              }))}
-              value={metric}
-              onChange={(e) => setMetric(e.target.value)}
+      {!mobile && (
+        <div className={`selectors ${wideClass ? "wide" : ""}`}>
+          <button onClick={toggleWideClass}>{wideClass ? "<" : ">"}</button>
+          <NativeSelect
+            mt="md"
+            label="Výběr ukazatele"
+            data={data.map((item) => ({
+              value: item.id,
+              label: item.nazev,
+            }))}
+            value={metric}
+            onChange={(e) => setMetric(e.target.value)}
+          />
+          
+          {level !== "Obce" && selectedFeatureId && rank && wideClass && (
+            <Plot
+              data={rank.data}
+              layout={rank.layout}
+              style={{ width: "100%", height: "400px" }}
             />
-          </motion.div>
-        ))}
+          )}
+          {selectedFeatureId && wideClass && (
+            <Plot
+              data={plotData2.data}
+              layout={plotData2.layout}
+              style={{ width: "100%", height: "200px" }}s
+            />
+          )}
+          
+        </div>
+      )}
 
       <div className="timeline">
         <div className="slider-container">

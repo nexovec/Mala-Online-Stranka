@@ -20,11 +20,28 @@ body {
   background-color: rgba(255, 255, 255, 1);
   padding: 1em;
   border-radius: 20px;
-  cursor: grab;
+}
+
+.wide {
+  width: 50% !important;
 }
 
 .selectors div {
   margin: 0 !important;
+}
+
+.selectors button {
+  right: 0.3em;
+  top: 0em;
+  position: absolute;
+  z-index: 2;
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-weight: 700;
+  font-size: 1.5em;
 }
 
 .css-14pt78w-MuiSlider-rail {
@@ -72,7 +89,7 @@ fieldset {
 }
 
 .modal button {
-  right: 0em;
+  right: 0.3em;
   top: 0em;
   position: absolute;
   z-index: 2;
@@ -271,4 +288,26 @@ fieldset {
     cursor: auto;
   }
 
+  .timeline {
+    flex-direction: column;
+  }
+
+  .slider-container {
+    width: 90%;
+    margin: 0;
+    font-size: 0.7em;
+
+  }
+
+  .timeline-container {
+    width: 90%;
+    margin: 0;
+    font-size: 0.7em;
+    gap: 0;
+  }
+
+
+  .helpicon-container {
+    bottom: 9em;
+  }
 }
