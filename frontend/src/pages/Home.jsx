@@ -126,6 +126,7 @@ const Home = () => {
 
     const fetchData = async () => {
       try {
+        setPlotData2(null);
         const response = await fetch(
           `${defaultExport.BACKEND_URL}/data/spider?place=${obec}&year=${year}&level=${level}`
         );
@@ -145,6 +146,7 @@ const Home = () => {
     if (level === "Obce" && obec != null) {
       obec = selectedFeatureId.slice(6);
     }
+    setRank(null);
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -172,6 +174,7 @@ const Home = () => {
 
     const fetchData = async () => {
       try {
+        setPlotData2(null);
         const response = await fetch(
           `${defaultExport.BACKEND_URL}/data/plotlygraph?place=${obec}&metric=${metric}&level=${level}`
         );
@@ -352,12 +355,13 @@ const Home = () => {
               className="flag"
             />
           )}
-
+          {plotData && (
           <Plot
             data={plotData.data}
             layout={plotData.layout}
             style={{ width: "100%", height: "400px" }}
           />
+          )}
         </div>
       )}
 
@@ -397,7 +401,7 @@ const Home = () => {
               style={{ width: "100%", height: "400px" }}
             />
           )}
-          {selectedFeatureId && wideClass && (
+          {selectedFeatureId && wideClass && plotData2 && (
             <Plot
               data={plotData2.data}
               layout={plotData2.layout}
