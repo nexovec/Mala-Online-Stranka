@@ -404,7 +404,7 @@ const Home = () => {
             />
           )}
 
-          {!rank && level !== "obce" && (
+          {!rank && level !== "obce" && wideClass && (
             <div className="loading-rank">
               <BounceLoader color="#1976d2" height={20} loading width={400} />
             </div>
@@ -419,7 +419,7 @@ const Home = () => {
             />
           )}
 
-          {!plotData2 && (
+          {!plotData2 && wideClass && (
             <div className="loading-plot2">
               <BounceLoader color="#1976d2" height={20} loading width={400} />
             </div>
