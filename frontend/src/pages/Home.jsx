@@ -7,7 +7,7 @@ import "./style/Home.css";
 //import L from "leaflet";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import BarLoader from "react-spinners/BarLoader";
+import BounceLoader from "react-spinners/BounceLoader";
 import Plot from "react-plotly.js";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal } from "@mantine/core";
@@ -217,7 +217,7 @@ const Home = () => {
     return (
       <div className="loading-container">
         <img src="logo.png" alt="cloudovi bratri" />
-        <BarLoader color="#010619" height={20} loading width={400} />
+        <BounceLoader color="#010619" height={20} loading width={400} />
       </div>
     );
   }
@@ -455,7 +455,7 @@ const Home = () => {
           <Modal.Overlay />
           <Modal.Content>
             <Modal.Header>
-              <Modal.Title>Marečku podejte mi pero</Modal.Title>
+              <Modal.Title>Modal</Modal.Title>
               <Modal.CloseButton />
             </Modal.Header>
             <Modal.Body>
