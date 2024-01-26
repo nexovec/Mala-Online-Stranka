@@ -257,6 +257,22 @@ fieldset {
   display: none;
 }
 
+.loading-rank {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 400px;
+}
+
+.loading-plot2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 200px;
+}
+
 @media only screen and (max-width: 1200px) {
 
   .search {

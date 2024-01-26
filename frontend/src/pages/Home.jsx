@@ -62,7 +62,9 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${defaultExport.BACKEND_URL}/ciselnik/metrics`);
+        const response = await fetch(
+          `${defaultExport.BACKEND_URL}/ciselnik/metrics`
+        );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -348,19 +350,19 @@ const Home = () => {
 
           {level === "obce" && selectedFeatureId != null && (
             <img
-              src={`${defaultExport.BACKEND_URL}/data/flag?place=${selectedFeatureId.slice(
-                6
-              )}`}
+              src={`${
+                defaultExport.BACKEND_URL
+              }/data/flag?place=${selectedFeatureId.slice(6)}`}
               alt="Flag"
               className="flag"
             />
           )}
           {plotData && (
-          <Plot
-            data={plotData.data}
-            layout={plotData.layout}
-            style={{ width: "100%", height: "400px" }}
-          />
+            <Plot
+              data={plotData.data}
+              layout={plotData.layout}
+              style={{ width: "100%", height: "400px" }}
+            />
           )}
         </div>
       )}
@@ -393,7 +395,7 @@ const Home = () => {
             value={metric}
             onChange={(e) => setMetric(e.target.value)}
           />
-          
+
           {level !== "obce" && selectedFeatureId && rank && wideClass && (
             <Plot
               data={rank.data}
@@ -401,14 +403,27 @@ const Home = () => {
               style={{ width: "100%", height: "400px" }}
             />
           )}
+
+          {!rank && level !== "obce" && (
+            <div className="loading-rank">
+              <BounceLoader color="#1976d2" height={20} loading width={400} />
+            </div>
+          )}
+
           {selectedFeatureId && wideClass && plotData2 && (
             <Plot
               data={plotData2.data}
               layout={plotData2.layout}
-              style={{ width: "100%", height: "200px" }}s
+              style={{ width: "100%", height: "200px" }}
+              s
             />
           )}
-          
+
+          {!plotData2 && (
+            <div className="loading-plot2">
+              <BounceLoader color="#1976d2" height={20} loading width={400} />
+            </div>
+          )}
         </div>
       )}
 
