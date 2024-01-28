@@ -128,7 +128,7 @@ const Home = () => {
 
     const fetchData = async () => {
       try {
-        setPlotData2(null);
+        setPlotData(null);
         const response = await fetch(
           `${defaultExport.BACKEND_URL}/data/spider?place=${obec}&year=${year}&level=${level}`
         );
@@ -307,8 +307,14 @@ const Home = () => {
           )}
           onChange={(event, newValue) => {
             if (newValue) {
-              setSelectedFeatureId(newValue.id);
+              if (level === "obce") {
+                setSelectedFeatureId("aaaaaa" + newValue.id);
+              } else {
+                setSelectedFeatureId(newValue.id);
+              }
+
               console.log(newValue.id);
+              console.log(selectedFeatureId);
               //setSearch(newValue.id);
               setShowmodal(true);
               //setSelectedArea(newValue.name);
@@ -347,7 +353,6 @@ const Home = () => {
               <h4>{detailInfo.kraj_name}</h4>
             </div>
           ) : null}
-
           {level === "obce" && selectedFeatureId != null && (
             <img
               src={`${
@@ -357,7 +362,11 @@ const Home = () => {
               className="flag"
             />
           )}
-          {plotData && (
+          {!plotData ? (
+            <div className="loading-rank">
+              <BounceLoader color="#1976d2" height={20} loading width={400} />
+            </div>
+          ) : (
             <Plot
               data={plotData.data}
               layout={plotData.layout}
@@ -415,7 +424,6 @@ const Home = () => {
               data={plotData2.data}
               layout={plotData2.layout}
               style={{ width: "100%", height: "200px" }}
-              s
             />
           )}
 
@@ -455,6 +463,7 @@ const Home = () => {
               data={["Okresy", "Kraje", "Obce"]}
               onChange={(e) => {
                 setLevel(e.target.value.toLowerCase());
+                selectedFeatureId && setSelectedFeatureId(null);
               }}
             />
           </div>
